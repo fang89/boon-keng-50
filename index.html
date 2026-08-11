@@ -12,8 +12,8 @@
   --line:#e7e2da; --accent:#b45309;
   --shadow:0 1px 2px rgba(28,25,23,.06),0 8px 24px rgba(28,25,23,.05);
   /* one category palette for cards and map markers alike, legible on both basemaps */
-  --food:#e8871a; --shopping:#8b5cf6; --tcg:#06b6d4; --games:#ef4444;
-  --outdoors:#10b981; --sports:#3b82f6; --gyms:#84cc16;
+  --food:#f59e0b; --drinks:#ec4899; --shopping:#8b5cf6; --tcg:#06b6d4;
+  --games:#ef4444; --gyms:#84cc16; --courts-pools:#3b82f6; --outdoors:#10b981;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -107,6 +107,15 @@ main{padding:28px 0 10px}
 .chead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .num{font-size:11.5px;font-weight:750;color:var(--ct);font-variant-numeric:tabular-nums;letter-spacing:.06em}
 .dist{font-size:11.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.late{font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);
+  border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));padding:2px 7px;border-radius:999px;white-space:nowrap}
+.chead .right{display:flex;align-items:center;gap:7px}
+.chip.late-chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.pp-late{display:inline-block;font-size:10px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 40%,var(--line));
+  padding:1px 6px;border-radius:999px;margin-left:6px}
+/* home marker sits above everything else on the map */
+.homepin{filter:drop-shadow(0 2px 5px rgba(0,0,0,.35))}
 h2{margin:0;font-size:18px;line-height:1.25;letter-spacing:-.01em;font-weight:700}
 .where{margin:0;font-size:13px;color:var(--muted)}
 .blurb{margin:0;font-size:14.5px;opacity:.92}
@@ -136,7 +145,7 @@ footer p{margin:0 0 10px;max-width:72ch}
   <div class="wrap">
     <p class="eyebrow">Boon Keng &middot; Kallang / Whampoa &middot; Singapore</p>
     <h1><span class="n" id="hcount">—</span> things to do<br>around Boon Keng</h1>
-    <p class="lede">Every place below is plotted from its real address. The rings are 500&nbsp;m, 1&nbsp;km, 2&nbsp;km and 3&nbsp;km from Boon Keng MRT &mdash; pick a radius and the map, the ring and the list all follow.</p>
+    <p class="lede">Every place below is plotted from its real address. The rings are 500&nbsp;m, 1&nbsp;km, 2&nbsp;km and 3&nbsp;km from the triangle &mdash; pick a radius and the map, the ring and the list all follow. The <b>Open late</b> filter is the one to reach for at 2am.</p>
   </div>
 </header>
 
@@ -190,73 +199,86 @@ footer p{margin:0 0 10px;max-width:72ch}
 
 <script src="vendor/leaflet.js"></script>
 <script>
-const HOME = [1.319940, 103.862053];
+const HOME = [1.316425, 103.861502];
 const P = [
-["Bendemeer Market & Food Centre", "Food", 134, 1.31944, 103.86302, "29 Bendemeer Rd", "The local canteen, and the single best reason to live here.", "Go 7–9am. Half the good stalls are packed up by lunch."],
-["Original Simon Road Hokkien Mee", "Food", 134, 1.319042, 103.862891, "Bendemeer Food Centre", "The island-famous wet-style plate, made by the original family.", ""],
-["Bendemeer Prawn Noodle", "Food", 134, 1.319288, 103.863229, "Bendemeer Food Centre", "Soup or dry, with punchy sambal and fried shallots on top.", ""],
-["Yong Xiang Carrot Cake", "Food", 134, 1.319288, 103.862811, "Bendemeer Food Centre", "Order both black and white and settle the argument for good.", ""],
-["Chung Ping Chicken Rice", "Food", 134, 1.319042, 103.863149, "Bendemeer Food Centre", "Unfussy, consistent, and cheaper than anywhere with a queue photo.", ""],
-["Bendemeer Shopping Mall", "Shopping", 149, 1.318838, 103.862816, "Bendemeer Rd", "A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.", ""],
-["Dungeon Performance", "Gyms", 356, 1.31714, 103.86311, "80 Bendemeer Rd #01-10", "3,600 sq ft of strength and conditioning inside the Wyse Active Hub badminton complex.", "Open 6am–11pm daily. Four minutes from the MRT exit."],
-["The Gym Pod @ Bendemeer", "Gyms", 356, 1.3167, 103.86311, "80 Bendemeer Rd", "Book a private pod by the hour. Useful when you'd rather nobody watched.", ""],
-["Anytime Fitness Boon Keng", "Gyms", 617, 1.314806, 103.859952, "294A/B Lavender St", "24-hour card access, which is the entire reason to pick this one.", "Staffed 12–9pm weekdays, 11am–7pm weekends. Sign up inside those hours or nobody's there."],
-["Whampoa Makan Place & Market", "Food", 858, 1.323065, 103.854996, "Blk 90–92 Whampoa Dr", "A sprawling old-school centre with a section that never closes.", "Come at 3am. It is one of the few honest supper options left in the area."],
-["BFF Climb Bendemeer", "Gyms", 871, 1.31216, 103.862941, "CT Hub, 2 Kallang Ave #01-20", "Big bouldering gym with free harness rental and problems across every grade.", "Weekday afternoons are calm. Evenings and weekends are shoulder to shoulder."],
-["Geylang Bahru Market & Food Centre", "Food", 900, 1.321463, 103.870005, "Blk 69 Geylang Bahru", "Across the river and almost entirely a residents-only crowd.", ""],
-["Chye Seng Huat Hardware", "Food", 947, 1.31159, 103.860365, "150 Tyrwhitt Rd", "Specialty coffee inside a converted hardware shop. Jalan Besar’s anchor.", "Then walk Tyrwhitt Rd end to end — a dozen shophouse cafés and bars in one stretch."],
-["Whitley Road Big Prawn Noodle", "Food", 969, 1.323428, 103.85406, "Whampoa Makan Place", "The big-prawn bowl that built the name, at hawker prices.", ""],
-["Kolam Ayer riverside deck", "Outdoors", 987, 1.324061, 103.86992, "Kallang River, behind the estate", "Landscaped ABC Waters riverbank right at your back door.", "Best light 30 minutes before sunset, looking downstream."],
-["Jalan Besar Swimming Complex", "Sports", 1025, 1.310956, 103.859974, "100 Tyrwhitt Rd", "A 1950s public pool still in daily use, for a couple of dollars.", ""],
-["Dong Po Colonial Café", "Food", 1034, 1.32155, 103.852891, "Balestier Rd", "Retro Hainanese bakery of the mooncake-tin-and-formica school.", ""],
-["City Square Mall", "Shopping", 1123, 1.311421, 103.856624, "180 Kitchener Rd · Farrer Park MRT", "Your nearest full-size mall, one stop down and connected underground.", "City Green sits right outside it — a real park bolted onto a shopping centre."],
-["Boulder+ at Aperia Mall", "Gyms", 1165, 1.309711, 103.864326, "12 Kallang Ave", "Indoor bouldering inside a small, calm mall most people drive past.", ""],
-["Jalan Besar ActiveSG Gym", "Gyms", 1176, 1.309522, 103.860211, "Jalan Besar Sports Centre, 100 Tyrwhitt Rd", "Public-rate gym, 7am–10pm daily. The cheapest honest workout in the area.", ""],
-["Whampoa Park Connector", "Outdoors", 1184, 1.326493, 103.853659, "Along Sungei Whampoa", "The other direction — a green corridor through Jalan Rajah and Kim Keat.", ""],
-["Loy Kee Best Chicken Rice", "Food", 1236, 1.324169, 103.851769, "342 Balestier Rd", "One of the oldest names in the trade, still doing one thing properly.", ""],
-["Wheeler’s Yard", "Food", 1266, 1.326625, 103.852834, "28 Lor Ampas", "Bike café behind the most photographed blue door in Singapore.", ""],
-["Agora Hobby", "TCG", 1270, 1.308522, 103.862045, "Blk 809 French Rd #05-164", "Trading cards plus the wider hobby shelf — models, supplies, singles.", "Weekend tournaments pull a real crowd. Check their socials for the schedule."],
-["Founder Bak Kut Teh", "Food", 1317, 1.324295, 103.85104, "347 Balestier Rd", "Peppery Teochew style. Expect a queue and a wall of celebrity photos.", ""],
-["Hideout", "TCG", 1318, 1.308117, 103.861189, "803 King George’s Ave #02-190", "Magic, Lorcana and Flesh and Blood, run by people who actually play them.", "Opens 6pm on Mondays, 1pm Tuesday to Saturday, and shuts at 6pm on Sundays."],
-["Mustafa Centre", "Shopping", 1326, 1.310112, 103.855291, "145 Syed Alwi Rd · Farrer Park", "Open 24 hours and stocked like six shops crammed into one.", "Go at 2am for the full experience. Bring patience for the aisles."],
-["The Poiz Centre", "Shopping", 1456, 1.331497, 103.868214, "51 Upper Serangoon Rd · Potong Pasir", "One stop up: a compact neighbourhood mall glued to the MRT exit.", ""],
-["Kallang Riverside Park", "Outdoors", 1576, 1.30723, 103.868326, "Kallang Riverside", "River-mouth lawns looking back at the city skyline.", ""],
-["Zhongshan Mall", "Shopping", 1891, 1.326945, 103.846554, "20 Ah Hood Rd", "Handy pairing with the memorial hall next door — food court, supermarket, cinema.", ""],
-["Zhongshan Park", "Outdoors", 1917, 1.327108, 103.846374, "Ah Hood Rd · Balestier", "Small and quiet. The enormous central banyan tree is the whole point.", ""],
-["Kayak on the Kallang", "Sports", 1942, 1.304358, 103.869936, "Water-Venture Kallang", "Paddle the river you live next to. Dragonboat sessions too.", "Book ahead for weekends — walk-ins rarely get a slot."],
-["Little India Arcade", "Shopping", 1970, 1.305677, 103.851547, "48 Serangoon Rd", "Henna, garlands, brassware and an excellent tissue prata stop.", ""],
-["Kallang Park Connector", "Outdoors", 2016, 1.338053, 103.862763, "Starts at Bendemeer Rd", "Ride or walk the river all the way down to Marina Barrage, about 7 km.", ""],
-["OCBC Aquatic Centre", "Sports", 2022, 1.305175, 103.872677, "Singapore Sports Hub", "Swim in an actual Olympic-spec competition pool during public hours.", ""],
-["Tekka Centre", "Food", 2031, 1.306247, 103.849956, "665 Buffalo Rd · Little India", "Wet market downstairs, biryani and fabric upstairs.", ""],
-["Inferno Gaming", "TCG", 2085, 1.337881, 103.856613, "8 Lor 7 Toa Payoh #01-287", "Your nearest proper neighbourhood card shop, tucked into an HDB shopfront.", ""],
-["National Stadium", "Sports", 2124, 1.304698, 103.873563, "1 Stadium Dr", "Check the fixture list. The dome is worth one visit regardless.", ""],
-["Sim Lim Square", "Shopping", 2131, 1.3028, 103.85304, "1 Rochor Canal Rd", "Six floors of electronics, repairs, imports and hobby shops. The mothership.", "Know the price before you walk in. Cash gets you further than a card."],
-["CardGaiden", "TCG", 2131, 1.30324, 103.85304, "Sim Lim Square #03-52", "Japanese Pokémon boosters and singles, Yu-Gi-Oh OCG, Vanguard, Weiss Schwarz, Digimon.", "Restocks get announced on their socials, not the shelf."],
-["Sim Lim card-shop crawl", "TCG", 2131, 1.30302, 103.85282, "Sim Lim Square, levels 3–4", "Several card shops within one lift ride — the fastest way to price-check a single.", ""],
-["RetroNutz", "Games", 2131, 1.30302, 103.85326, "Sim Lim Square", "Working retro consoles, Game Boys and CRT sets, curated by an owner who kept his own collection.", ""],
-["Balestier lighting-shop strip", "Shopping", 2202, 1.326301, 103.843297, "Balestier Rd", "Half a kilometre of nothing but chandeliers. Genuinely strange.", ""],
-["Kallang Wave Mall", "Shopping", 2245, 1.303075, 103.87315, "1 Stadium Pl", "Sports-leaning mall attached to the Hub, with the waterfront promenade outside.", ""],
-["Loong Fatt Eating House", "Food", 2288, 1.326242, 103.84246, "639 Balestier Rd", "Tau sar piah and kopi, cash only, shuts when it sells out.", "Buy the pastries first, then sit down. They go before the coffee does."],
-["TOG (Toy Or Game)", "TCG", 2422, 1.299604, 103.854242, "Bugis+ #05-04/05/06, 201 Victoria St", "The flagship: trading cards, anime merch and gunpla under one roof.", ""],
-["Bidadari Park & Alkaff Lake", "Outdoors", 2657, 1.340296, 103.874561, "Bidadari · Woodleigh MRT", "The newest big park on this side of town, and excellent for birds at dawn.", "Go at first light. By 9am it is joggers and prams."],
-["Games Haven", "TCG", 3366, 1.314845, 103.891904, "736A Geylang Rd · Paya Lebar", "Singapore’s first WPN Premium store. The place to play Magic properly.", "Check the event calendar before going — tables fill on tournament nights."],
-["Qisahn", "Games", 3418, 1.291185, 103.851184, "The Adelphi, 1 Coleman St", "Imports, pre-orders and trade-ins, run by people who actually play.", ""],
-["Funan", "Shopping", 3451, 1.291348, 103.84999, "107 North Bridge Rd", "Tech and games mall rebuilt around a climbing wall and an indoor cycling path.", ""],
-["NEX", "Shopping", 3612, 1.350769, 103.872296, "23 Serangoon Central", "The biggest mall on the North East Line, four stops up. Rooftop dog run included.", ""]
+["Dungeon Performance", "Gyms", 187, 1.31714, 103.86311, "80 Bendemeer Rd #01-10", "3,600 sq ft of strength and conditioning tucked into the ground floor of an office block.", "Open 6am–11pm daily, and four minutes from the MRT exit.", 0],
+["The Gym Pod @ Bendemeer", "Gyms", 187, 1.3167, 103.86311, "80 Bendemeer Rd", "Book a private pod by the hour. Useful when you'd rather nobody watched.", "", 1],
+["Anytime Fitness Boon Keng", "Gyms", 249, 1.314806, 103.859952, "294A/B Lavender St", "24-hour card access, which is the entire reason to pick this one.", "Staffed 12–9pm weekdays, 11am–7pm weekends. Sign up inside those hours or nobody's there.", 1],
+["Zamas", "Food", 249, 1.315697, 103.85938, "324 Lavender St", "Late-night mainstay that stays crowded well past the point most kitchens have shut.", "", 1],
+["Bendemeer Shopping Mall", "Shopping", 306, 1.318838, 103.862816, "Bendemeer Rd", "A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.", "", 0],
+["Bendemeer Market & Food Centre", "Food", 353, 1.31944, 103.86302, "29 Bendemeer Rd", "The local canteen, and the single best reason to live here.", "Go 7–9am. Half the good stalls are packed up by lunch.", 0],
+["Original Simon Road Hokkien Mee", "Food", 353, 1.319042, 103.862891, "Bendemeer Food Centre", "The island-famous wet-style plate, made by the original family.", "", 0],
+["Bendemeer Prawn Noodle", "Food", 353, 1.319288, 103.863229, "Bendemeer Food Centre", "Soup or dry, with punchy sambal and fried shallots on top.", "", 0],
+["Yong Xiang Carrot Cake", "Food", 353, 1.319288, 103.862811, "Bendemeer Food Centre", "Order both black and white and settle the argument for good.", "", 0],
+["Chung Ping Chicken Rice", "Food", 353, 1.319042, 103.863149, "Bendemeer Food Centre", "Unfussy, consistent, and cheaper than anywhere with a queue photo.", "", 0],
+["BFF Climb Bendemeer", "Gyms", 501, 1.31216, 103.862941, "CT Hub, 2 Kallang Ave #01-20", "Big bouldering gym with free harness rental and problems across every grade.", "Weekday afternoons are calm. Evenings and weekends are shoulder to shoulder.", 0],
+["Chye Seng Huat Hardware", "Drinks", 552, 1.31159, 103.860365, "150 Tyrwhitt Rd", "Specialty coffee inside a converted hardware shop. Jalan Besar’s anchor.", "Then walk Tyrwhitt Rd end to end — a dozen shophouse cafés and bars in one stretch.", 0],
+["Druggists", "Drinks", 619, 1.311162, 103.859679, "119 Tyrwhitt Rd", "Craft beer on a rotating tap wall, with har cheong gai to go with it.", "", 0],
+["Jalan Besar Swimming Complex", "Courts & Pools", 631, 1.310956, 103.859974, "100 Tyrwhitt Rd", "A 1950s public pool still in daily use, for a couple of dollars.", "", 0],
+["Nana Original Thai Food", "Food", 674, 1.310867, 103.86393, "Aperia Mall, Kallang Ave", "Round-the-clock Thai — the closest thing to a proper 4am meal that isn't dim sum.", "", 1],
+["City Square Mall", "Shopping", 777, 1.311421, 103.856624, "180 Kitchener Rd · Farrer Park MRT", "Your nearest full-size mall, one stop down and connected underground.", "City Green sits right outside it — a real park bolted onto a shopping centre.", 0],
+["Jalan Besar ActiveSG Gym", "Gyms", 781, 1.309522, 103.860211, "Jalan Besar Sports Centre, 100 Tyrwhitt Rd", "Public-rate gym, 7am–10pm daily. The cheapest honest workout in the area.", "", 0],
+["Boulder+ at Aperia Mall", "Gyms", 810, 1.309711, 103.864326, "12 Kallang Ave", "Indoor bouldering inside a small, calm mall most people drive past.", "", 0],
+["Antea Social", "Drinks", 871, 1.309251, 103.85835, "9 Tyrwhitt Rd", "Minimalist tea bar — rare single-origin leaves, onigiri and cakes instead of coffee.", "", 0],
+["Agora Hobby", "TCG", 881, 1.308522, 103.862045, "Blk 809 French Rd #05-164", "Trading cards plus the wider hobby shelf — models, supplies, singles.", "Weekend tournaments pull a real crowd. Check their socials for the schedule.", 0],
+["1 Tyrwhitt Bistro & Bar", "Drinks", 893, 1.309076, 103.858266, "1 Tyrwhitt Rd, at the Kitchener Rd junction", "Corner bistro at the head of the strip. Pizza, pasta and a long drinks list.", "", 0],
+["Hideout", "TCG", 924, 1.308117, 103.861189, "803 King George’s Ave #02-190", "Magic, Lorcana and Flesh and Blood, run by people who actually play them.", "Opens 6pm on Mondays, 1pm Tuesday to Saturday, and shuts at 6pm on Sundays.", 0],
+["Mustafa Centre", "Shopping", 985, 1.310112, 103.855291, "145 Syed Alwi Rd · Farrer Park", "Open 24 hours and stocked like six shops crammed into one.", "Go at 2am for the full experience. Bring patience for the aisles.", 1],
+["Whampoa Makan Place & Market", "Food", 1034, 1.323065, 103.854996, "Blk 90–92 Whampoa Dr", "A sprawling old-school centre with a section that never closes.", "Come at 3am. It is one of the few honest supper options left in the area.", 1],
+["Swee Choon Tim Sum", "Food", 1046, 1.308215, 103.856907, "191 Jalan Besar", "Fifty-year-old dim sum institution spread across six shophouses, and the definitive Singapore supper.", "Open till 2am, and 4am Friday and Saturday. Closed Tuesdays. Expect to queue.", 1],
+["Geylang Bahru Market & Food Centre", "Food", 1099, 1.321463, 103.870005, "Blk 69 Geylang Bahru", "Across the river and almost entirely a residents-only crowd.", "", 0],
+["Dong Po Colonial Café", "Food", 1114, 1.32155, 103.852891, "Balestier Rd", "Retro Hainanese bakery of the mooncake-tin-and-formica school.", "", 0],
+["Berseh Food Centre", "Food", 1132, 1.307344, 103.856889, "166 Jalan Besar", "Two floors of hawker stalls directly opposite Swee Choon, and a fraction of the queue.", "", 0],
+["Whitley Road Big Prawn Noodle", "Food", 1136, 1.323428, 103.85406, "Whampoa Makan Place", "The big-prawn bowl that built the name, at hawker prices.", "", 0],
+["Kolam Ayer riverside deck", "Outdoors", 1264, 1.324061, 103.86992, "Kallang River, behind the estate", "Landscaped ABC Waters riverbank right at your back door.", "Best light 30 minutes before sunset, looking downstream.", 0],
+["Kallang Riverside Park", "Outdoors", 1273, 1.30723, 103.868326, "Kallang Riverside", "River-mouth lawns looking back at the city skyline.", "", 0],
+["Loy Kee Best Chicken Rice", "Food", 1383, 1.324169, 103.851769, "342 Balestier Rd", "One of the oldest names in the trade, still doing one thing properly.", "", 0],
+["Whampoa Park Connector", "Outdoors", 1419, 1.326493, 103.853659, "Along Sungei Whampoa", "The other direction — a green corridor through Jalan Rajah and Kim Keat.", "", 0],
+["Founder Bak Kut Teh", "Food", 1455, 1.324295, 103.85104, "347 Balestier Rd", "Peppery Teochew style. Expect a queue and a wall of celebrity photos.", "", 0],
+["Wheeler’s Yard", "Drinks", 1488, 1.326625, 103.852834, "28 Lor Ampas", "Bike café behind the most photographed blue door in Singapore.", "", 0],
+["Little India Arcade", "Shopping", 1629, 1.305677, 103.851547, "48 Serangoon Rd", "Henna, garlands, brassware and an excellent tissue prata stop.", "", 0],
+["Kayak on the Kallang", "Outdoors", 1637, 1.304358, 103.869936, "Water-Venture Kallang", "Paddle the river you live next to. Dragonboat sessions too.", "Book ahead for weekends — walk-ins rarely get a slot.", 0],
+["Tekka Centre", "Food", 1711, 1.306247, 103.849956, "665 Buffalo Rd · Little India", "Wet market downstairs, biryani and fabric upstairs.", "", 0],
+["Sim Lim Square", "Shopping", 1762, 1.3028, 103.85304, "1 Rochor Canal Rd", "Six floors of electronics, repairs, imports and hobby shops. The mothership.", "Know the price before you walk in. Cash gets you further than a card.", 0],
+["CardGaiden", "TCG", 1762, 1.30324, 103.85304, "Sim Lim Square #03-52", "Japanese Pokémon boosters and singles, Yu-Gi-Oh OCG, Vanguard, Weiss Schwarz, Digimon.", "Restocks get announced on their socials, not the shelf.", 0],
+["Sim Lim card-shop crawl", "TCG", 1762, 1.30302, 103.85282, "Sim Lim Square, levels 3–4", "Several card shops within one lift ride — the fastest way to price-check a single.", "", 0],
+["RetroNutz", "Games", 1762, 1.30302, 103.85326, "Sim Lim Square", "Working retro consoles, Game Boys and CRT sets, curated by an owner who kept his own collection.", "", 0],
+["OCBC Aquatic Centre", "Courts & Pools", 1763, 1.305175, 103.872677, "Singapore Sports Hub", "Swim in an actual Olympic-spec competition pool during public hours.", "", 0],
+["The Poiz Centre", "Shopping", 1835, 1.331497, 103.868214, "51 Upper Serangoon Rd · Potong Pasir", "One stop up: a compact neighbourhood mall glued to the MRT exit.", "", 0],
+["National Stadium", "Courts & Pools", 1870, 1.304698, 103.873563, "1 Stadium Dr", "Check the fixture list. The dome is worth one visit regardless.", "", 0],
+["Kallang Wave Mall", "Shopping", 1970, 1.3033, 103.87315, "1 Stadium Pl", "Sports-leaning mall attached to the Hub, with the waterfront promenade outside.", "", 0],
+["Paco Funworld", "Games", 1970, 1.30286, 103.87315, "Kallang Wave Mall, 1 Stadium Pl", "The nearest arcade to home — claw machines and ticket games, attached to the Sports Hub.", "", 0],
+["Zhongshan Mall", "Shopping", 2032, 1.326945, 103.846554, "20 Ah Hood Rd", "Handy pairing with the memorial hall next door — food court, supermarket, cinema.", "", 0],
+["TOG (Toy Or Game)", "TCG", 2037, 1.29949, 103.854431, "Bugis+ #05-04/05/06, 201 Victoria St", "The flagship: trading cards, anime merch and gunpla under one roof.", "", 0],
+["Battle Bunker", "Games", 2037, 1.29982, 103.85424, "Bugis+, 201 Victoria St, Level 3", "Game store and open play arena — rent from the shelf or bring your own, up to ten to a table.", "From about $10 a head. Runs regular events, so check before turning up with a group.", 0],
+["Virtualand", "Games", 2037, 1.29949, 103.854049, "Bugis+, 201 Victoria St, Level 5", "Proper arcade opposite the cinema — rhythm cabinets, racing rigs and claw machines.", "Open till 11pm Friday and Saturday, 10pm the rest of the week.", 0],
+["Zhongshan Park", "Outdoors", 2059, 1.327108, 103.846374, "Ah Hood Rd · Balestier", "Small and quiet. The enormous central banyan tree is the whole point.", "", 0],
+["The Mind Cafe", "Games", 2264, 1.299703, 103.849887, "60A Prinsep St (and a Mega outlet at No. 30)", "The oldest and largest board game café in Singapore, open since 2005, with 800+ games at the Mega store.", "Staff will teach you a game you've never played — worth asking rather than defaulting to Catan.", 0],
+["Balestier lighting-shop strip", "Shopping", 2302, 1.326301, 103.843297, "Balestier Rd", "Half a kilometre of nothing but chandeliers. Genuinely strange.", "", 0],
+["King and the Pawn", "Games", 2326, 1.296476, 103.85521, "Purvis St, second floor", "A 55-seater up a shophouse staircase. Quieter and more homely than the big rooms.", "", 0],
+["Kallang Squash & Tennis Centre", "Courts & Pools", 2349, 1.305445, 103.879557, "8 Stadium Blvd", "Public squash and tennis courts by the hour, bookable through ActiveSG.", "Evening slots go first — book several days out.", 0],
+["Loong Fatt Eating House", "Food", 2382, 1.326242, 103.84246, "639 Balestier Rd", "Tau sar piah and kopi, cash only, shuts when it sells out.", "Buy the pastries first, then sit down. They go before the coffee does.", 0],
+["Kallang Park Connector", "Outdoors", 2409, 1.338053, 103.862763, "Starts at Bendemeer Rd", "Ride or walk the river all the way down to Marina Barrage, about 7 km.", "", 0],
+["Inferno Gaming", "TCG", 2447, 1.337881, 103.856613, "8 Lor 7 Toa Payoh #01-287", "Your nearest proper neighbourhood card shop, tucked into an HDB shopfront.", "", 0],
+["Bidadari Park & Alkaff Lake", "Outdoors", 3025, 1.340296, 103.874561, "Bidadari · Woodleigh MRT", "The newest big park on this side of town, and excellent for birds at dawn.", "Go at first light. By 9am it is joggers and prams.", 0],
+["Qisahn", "Games", 3032, 1.291185, 103.851184, "The Adelphi, 1 Coleman St", "Imports, pre-orders and trade-ins, run by people who actually play.", "", 0],
+["Funan", "Shopping", 3068, 1.291348, 103.84999, "107 North Bridge Rd", "Tech and games mall rebuilt around a climbing wall and an indoor cycling path.", "", 0],
+["Games Haven", "TCG", 3384, 1.314845, 103.891904, "736A Geylang Rd · Paya Lebar", "Singapore’s first WPN Premium store. The place to play Magic properly.", "Check the event calendar before going — tables fill on tournament nights.", 0],
+["NEX", "Shopping", 4003, 1.350769, 103.872296, "23 Serangoon Central", "The biggest mall on the North East Line, four stops up. Rooftop dog run included.", "", 0]
 ];
 
-const CATS = ["Food","Shopping","TCG","Games","Gyms","Sports","Outdoors"];
+const CATS = ["Food","Drinks","Shopping","TCG","Games","Gyms","Courts & Pools","Outdoors"];
 // Radii are cumulative and match the rings drawn on the map, so they behave as a
 // single choice rather than a set of toggles: "Under 1 km" includes "Under 500 m".
 const RINGS = [500, 1000, 2000, 3000];
 const ringLabel = r => r < 1000 ? "Under " + r + " m" : "Under " + r/1000 + " km";
-const slug = s => s.toLowerCase();
+const slug = s => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 const css  = n => getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
 const km   = m => m < 1000 ? m + " m" : (m/1000).toFixed(2) + " km";
 const esc  = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const mapsUrl = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p[0] + " Singapore");
 
-const state = {cats:new Set(), radius:null};
+const state = {cats:new Set(), radius:null, late:false};
 const dark = () => document.documentElement.dataset.theme === "dark" ||
   (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme:dark)").matches);
 
@@ -292,21 +314,27 @@ function paintRings(){
   });
 }
 
-// home
-L.circleMarker(HOME, {radius:7, color:css("bg"), weight:3,
-  fillColor:css("accent"), fillOpacity:1, interactive:false}).addTo(map);
-L.marker(HOME, {interactive:false, zIndexOffset:900, icon:L.divIcon({className:"", iconSize:null,
-  iconAnchor:[-12, 9], html:'<span class="homelab">Boon Keng MRT</span>'})}).addTo(map);
+// Home is a triangle, drawn deliberately larger than every other marker so it
+// stays findable when the map is dense.
+L.marker(HOME, {interactive:false, zIndexOffset:1000, icon:L.divIcon({
+  className:"", iconSize:[40,36], iconAnchor:[20,22],
+  html:'<svg class="homepin" width="40" height="36" viewBox="0 0 40 36" aria-hidden="true">'
+     + '<path d="M20 2.5 L37.5 32.5 L2.5 32.5 Z" fill="' + css("accent") + '" '
+     + 'stroke="' + css("bg") + '" stroke-width="3.5" stroke-linejoin="round"/></svg>'
+})}).addTo(map);
+L.marker(HOME, {interactive:false, zIndexOffset:1001, icon:L.divIcon({className:"", iconSize:null,
+  iconAnchor:[-18, 9], html:'<span class="homelab">Home</span>'})}).addTo(map);
 
 const layer = L.layerGroup().addTo(map);
 const markers = new Map();
 
 function popupHtml(p, i){
-  const [name,cat,m,,,where,blurb] = p;
+  const [name,cat,m,,,where,blurb,,late] = p;
   return '<div style="--pc:var(--'+slug(cat)+')">'
     + '<div class="pp-cat">' + cat + '</div>'
     + '<div class="pp-name">' + esc(name) + '</div>'
-    + '<p class="pp-meta">' + esc(where) + ' &middot; ' + km(m) + ' away</p>'
+    + '<p class="pp-meta">' + esc(where) + ' &middot; ' + km(m) + ' away'
+    + (late ? '<span class="pp-late">Open late</span>' : '') + '</p>'
     + '<p class="pp-blurb">' + esc(blurb) + '</p>'
     + '<a href="' + mapsUrl(p) + '" target="_blank" rel="noopener">Open in Google Maps &rarr;</a></div>';
 }
@@ -346,9 +374,11 @@ map.on("moveend zoomend", syncRecenter);
 
 /* ---------------- filters + list ---------------- */
 function shownIdx(){
-  const {cats, radius} = state;
+  const {cats, radius, late} = state;
   return P.map((p, i) => i)
-          .filter(i => (!cats.size || cats.has(P[i][1])) && (!radius || P[i][2] <= radius));
+          .filter(i => (!cats.size || cats.has(P[i][1]))
+                    && (!radius || P[i][2] <= radius)
+                    && (!late || P[i][8]));
 }
 
 function chip(row, cls, label, key, bag, colorVar, n){
@@ -390,8 +420,22 @@ const radiusChips = RINGS.map(r => {
   return b;
 });
 
+// "Open late" cuts across every category rather than being one of them: it means
+// open past midnight, or around the clock.
+const lateBtn = document.createElement("button");
+lateBtn.className = "chip late-chip";
+lateBtn.type = "button";
+lateBtn.setAttribute("aria-pressed", "false");
+lateBtn.innerHTML = '\u25D1 Open late<span class="k">' + P.filter(p => p[8]).length + '</span>';
+lateBtn.onclick = () => {
+  state.late = !state.late;
+  lateBtn.setAttribute("aria-pressed", String(state.late));
+  render();
+};
+distRow.insertBefore(lateBtn, clearBtn);
+
 clearBtn.onclick = () => {
-  state.cats.clear(); state.radius = null;
+  state.cats.clear(); state.radius = null; state.late = false;
   document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", "false"));
   render();
 };
@@ -418,10 +462,11 @@ function render(){
   idx.forEach(i => layer.addLayer(markers.get(i)));
 
   grid.innerHTML = idx.map((i, n) => {
-    const p = P[i], [name,cat,m,,,where,blurb,tip] = p;
+    const p = P[i], [name,cat,m,,,where,blurb,tip,late] = p;
     return '<li class="card" data-i="' + i + '" tabindex="0" style="--ct:var(--' + slug(cat) + ')">'
       + '<div class="chead"><span class="num">' + String(n+1).padStart(2,"0") + '</span>'
-      + '<span class="dist">' + km(m) + '</span></div>'
+      + '<span class="right">' + (late ? '<span class="late">Late</span>' : '')
+      + '<span class="dist">' + km(m) + '</span></span></div>'
       + '<h2>' + esc(name) + '</h2>'
       + '<p class="where">' + esc(where) + '</p>'
       + '<p class="blurb">' + esc(blurb) + '</p>'
@@ -438,7 +483,7 @@ function render(){
   });
 
   emptyEl.hidden = idx.length > 0;
-  const filtered = state.cats.size || state.radius;
+  const filtered = state.cats.size || state.radius || state.late;
   clearBtn.hidden = !filtered;
   countEl.textContent = filtered ? idx.length + " of " + P.length : P.length + " places";
   if (active !== null) document.querySelectorAll(".card").forEach(c => c.classList.toggle("on", +c.dataset.i === active));
