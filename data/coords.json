@@ -17,12 +17,6 @@
   "matched": "2 KALLANG AVENUE AGAPE METHODIST HOSPICE",
   "query": "2 KALLANG AVENUE"
  },
- "Balestier Heritage Trail": {
-  "lat": 1.32281193728737,
-  "lng": 103.852026274201,
-  "matched": "279 BALESTIER ROAD BALESTIER POINT SINGAPORE 329727",
-  "query": "BALESTIER POINT"
- },
  "Balestier lighting-shop strip": {
   "lat": 1.32630094883001,
   "lng": 103.843297064863,
@@ -52,12 +46,6 @@
   "lng": 103.874560510788,
   "matched": "BIDADARI PARK",
   "query": "BIDADARI PARK"
- },
- "Boon Keng Road shophouse row": {
-  "lat": 1.31547606723072,
-  "lng": 103.864442453627,
-  "matched": "BOON KENG ROAD",
-  "query": "BOON KENG ROAD"
  },
  "Boulder+ at Aperia Mall": {
   "lat": 1.3097112065077,
@@ -130,12 +118,6 @@
   "lng": 103.861188606169,
   "matched": "803 KING GEORGE'S AVENUE SINGAPORE 200803",
   "query": "803 KING GEORGE'S AVENUE"
- },
- "Indian Heritage Centre": {
-  "lat": 1.30568127839609,
-  "lng": 103.852251898056,
-  "matched": "5 CAMPBELL LANE INDIAN HERITAGE CENTRE SINGAPORE 209924",
-  "query": "INDIAN HERITAGE CENTRE"
  },
  "Inferno Gaming": {
   "lat": 1.3378805011388,
@@ -233,12 +215,6 @@
   "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
   "query": "BENDEMEER MARKET AND FOOD CENTRE"
  },
- "Petain Road terrace houses": {
-  "lat": 1.3136708488313,
-  "lng": 103.859754586538,
-  "matched": "403 JALAN BESAR PETAIN ROAD/TYRWHITT ROAD CONSERVATION AREA SINGAPORE 209010",
-  "query": "PETAIN ROAD"
- },
  "Qisahn": {
   "lat": 1.29118503658447,
   "lng": 103.851184338699,
@@ -262,18 +238,6 @@
   "lng": 103.853037814067,
   "matched": "1 ROCHOR CANAL ROAD SIM LIM SQUARE SINGAPORE 188504",
   "query": "SIM LIM SQUARE"
- },
- "St George’s Road SIT flats": {
-  "lat": 1.32340263694069,
-  "lng": 103.86163080083,
-  "matched": "1 SAINT GEORGE'S ROAD SINGAPORE 320001",
-  "query": "ST GEORGE'S ROAD"
- },
- "Sun Yat Sen Nanyang Memorial Hall": {
-  "lat": 1.32815361311294,
-  "lng": 103.847263651155,
-  "matched": "12 TAI GIN ROAD SUN YAT SEN NANYANG MEMORIAL HALL SINGAPORE 327874",
-  "query": "SUN YAT SEN NANYANG MEMORIAL HALL"
  },
  "TOG (Toy Or Game)": {
   "lat": 1.29960368990297,

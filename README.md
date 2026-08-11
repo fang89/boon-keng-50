@@ -1,6 +1,6 @@
 # Things To Do Around Boon Keng
 
-A mapped, filterable guide to 57 places within a walk, a bus, or a few North East Line stops of Boon Keng, Singapore.
+A mapped, filterable guide to 51 places within a walk, a bus, or a few North East Line stops of Boon Keng, Singapore.
 
 **Live:** https://fang89.github.io/boon-keng-50/
 
@@ -15,11 +15,10 @@ Every place is plotted from its real address, with distance rings at 500 m, 1 km
 | TCG / card shops | 7 |
 | Gyms | 6 |
 | Outdoors | 6 |
-| Heritage & old streets | 6 |
 | Sports | 4 |
 | Video game shops | 2 |
 
-By distance from Boon Keng MRT: **28** under 1.3 km, **24** between 1.3 and 2.5 km, **5** beyond 2.5 km. Nearest is Bendemeer Market at 134 m; furthest is NEX at 3.61 km.
+By distance from Boon Keng MRT: **24** under 1.3 km, **22** between 1.3 and 2.5 km, **5** beyond 2.5 km. Nearest is Bendemeer Market at 134 m; furthest is NEX at 3.61 km.
 
 ## How the distances work
 
@@ -43,7 +42,7 @@ Every place is one row in the `P` array near the bottom of `index.html`:
 ["Name", "Category", "walk|near|far", metres, lat, lng, "Address", "One-line blurb", "Optional tip"]
 ```
 
-Categories must be one of `Food`, `Shopping`, `TCG`, `Games`, `Gyms`, `Sports`, `Outdoors`, `Heritage`; each has a colour token in the CSS at the top of the file, used for both the card accent and the map marker. Chip counts, the headline number and the distance-band counts are all computed from the array, so adding a row is the only edit needed.
+Categories must be one of `Food`, `Shopping`, `TCG`, `Games`, `Gyms`, `Sports`, `Outdoors`; each has a colour token in the CSS at the top of the file, used for both the card accent and the map marker. Chip counts, the headline number and the distance-band counts are all computed from the array, so adding a row is the only edit needed.
 
 To add a place, get its coordinates from OneMap:
 

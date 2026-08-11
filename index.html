@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Things To Do Around Boon Keng</title>
-<meta name="description" content="A mapped, filterable guide to things worth doing within a walk, a bus or a few MRT stops of Boon Keng, Singapore — food, shopping, card shops, game shops, gyms, parks and old streets.">
+<meta name="description" content="A mapped, filterable guide to things worth doing within a walk, a bus or a few MRT stops of Boon Keng, Singapore — food, shopping, card shops, game shops, gyms and parks.">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 :root{
@@ -13,7 +13,7 @@
   --shadow:0 1px 2px rgba(28,25,23,.06),0 8px 24px rgba(28,25,23,.05);
   /* one category palette for cards and map markers alike, legible on both basemaps */
   --food:#e8871a; --shopping:#8b5cf6; --tcg:#06b6d4; --games:#ef4444;
-  --outdoors:#10b981; --heritage:#ec4899; --sports:#3b82f6; --gyms:#84cc16;
+  --outdoors:#10b981; --sports:#3b82f6; --gyms:#84cc16;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -189,10 +189,7 @@ const P = [
 ["Bendemeer Shopping Mall", "Shopping", "walk", 149, 1.318838, 103.862816, "Bendemeer Rd", "A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.", ""],
 ["Dungeon Performance", "Gyms", "walk", 356, 1.31714, 103.86311, "80 Bendemeer Rd #01-10", "3,600 sq ft of strength and conditioning inside the Wyse Active Hub badminton complex.", "Open 6am–11pm daily. Four minutes from the MRT exit."],
 ["The Gym Pod @ Bendemeer", "Gyms", "walk", 356, 1.3167, 103.86311, "80 Bendemeer Rd", "Book a private pod by the hour. Useful when you'd rather nobody watched.", ""],
-["St George’s Road SIT flats", "Heritage", "walk", 388, 1.323403, 103.861631, "St George’s Rd & Lane", "1950s public housing from before the HDB existed. Almost nobody visits.", ""],
-["Boon Keng Road shophouse row", "Heritage", "walk", 563, 1.315476, 103.864442, "Boon Keng Rd", "Pre-war terrace shophouses hiding in plain sight between the towers.", ""],
 ["Anytime Fitness Boon Keng", "Gyms", "walk", 617, 1.314806, 103.859952, "294A/B Lavender St", "24-hour card access, which is the entire reason to pick this one.", "Staffed 12–9pm weekdays, 11am–7pm weekends. Sign up inside those hours or nobody's there."],
-["Petain Road terrace houses", "Heritage", "walk", 742, 1.313671, 103.859755, "Petain Rd · Jalan Besar", "The most extravagant Peranakan tilework anywhere in the country.", ""],
 ["Whampoa Makan Place & Market", "Food", "walk", 858, 1.323065, 103.854996, "Blk 90–92 Whampoa Dr", "A sprawling old-school centre with a section that never closes.", "Come at 3am. It is one of the few honest supper options left in the area."],
 ["BFF Climb Bendemeer", "Gyms", "walk", 871, 1.31216, 103.862941, "CT Hub, 2 Kallang Ave #01-20", "Big bouldering gym with free harness rental and problems across every grade.", "Weekday afternoons are calm. Evenings and weekends are shoulder to shoulder."],
 ["Geylang Bahru Market & Food Centre", "Food", "walk", 900, 1.321463, 103.870005, "Blk 69 Geylang Bahru", "Across the river and almost entirely a residents-only crowd.", ""],
@@ -202,7 +199,6 @@ const P = [
 ["Jalan Besar Swimming Complex", "Sports", "walk", 1025, 1.310956, 103.859974, "100 Tyrwhitt Rd", "A 1950s public pool still in daily use, for a couple of dollars.", ""],
 ["Dong Po Colonial Café", "Food", "walk", 1034, 1.32155, 103.852891, "Balestier Rd", "Retro Hainanese bakery of the mooncake-tin-and-formica school.", ""],
 ["City Square Mall", "Shopping", "walk", 1123, 1.311421, 103.856624, "180 Kitchener Rd · Farrer Park MRT", "Your nearest full-size mall, one stop down and connected underground.", "City Green sits right outside it — a real park bolted onto a shopping centre."],
-["Balestier Heritage Trail", "Heritage", "walk", 1159, 1.322812, 103.852026, "Balestier Rd, about 1.7 km", "A self-guided loop past the neighbourhood’s best surviving buildings.", "Stop at the Sim Kwong Ho shophouses and look up — the bat-and-peony plasterwork is the finest on the street."],
 ["Boulder+ at Aperia Mall", "Gyms", "walk", 1165, 1.309711, 103.864326, "12 Kallang Ave", "Indoor bouldering inside a small, calm mall most people drive past.", ""],
 ["Jalan Besar ActiveSG Gym", "Gyms", "walk", 1176, 1.309522, 103.860211, "Jalan Besar Sports Centre, 100 Tyrwhitt Rd", "Public-rate gym, 7am–10pm daily. The cheapest honest workout in the area.", ""],
 ["Whampoa Park Connector", "Outdoors", "walk", 1184, 1.326493, 103.853659, "Along Sungei Whampoa", "The other direction — a green corridor through Jalan Rajah and Kim Keat.", ""],
@@ -214,10 +210,8 @@ const P = [
 ["Mustafa Centre", "Shopping", "near", 1326, 1.310112, 103.855291, "145 Syed Alwi Rd · Farrer Park", "Open 24 hours and stocked like six shops crammed into one.", "Go at 2am for the full experience. Bring patience for the aisles."],
 ["The Poiz Centre", "Shopping", "near", 1456, 1.331497, 103.868214, "51 Upper Serangoon Rd · Potong Pasir", "One stop up: a compact neighbourhood mall glued to the MRT exit.", ""],
 ["Kallang Riverside Park", "Outdoors", "near", 1576, 1.30723, 103.868326, "Kallang Riverside", "River-mouth lawns looking back at the city skyline.", ""],
-["Sun Yat Sen Nanyang Memorial Hall", "Heritage", "near", 1881, 1.328154, 103.847264, "12 Tai Gin Rd · Balestier", "A national monument villa that was once a revolutionary headquarters.", "Free entry for Singaporeans."],
 ["Zhongshan Mall", "Shopping", "near", 1891, 1.326945, 103.846554, "20 Ah Hood Rd", "Handy pairing with the memorial hall next door — food court, supermarket, cinema.", ""],
 ["Zhongshan Park", "Outdoors", "near", 1917, 1.327108, 103.846374, "Ah Hood Rd · Balestier", "Small and quiet. The enormous central banyan tree is the whole point.", ""],
-["Indian Heritage Centre", "Heritage", "near", 1924, 1.305681, 103.852252, "5 Campbell Lane", "Worth going for the building alone — the facade lights up at night.", ""],
 ["Kayak on the Kallang", "Sports", "near", 1942, 1.304358, 103.869936, "Water-Venture Kallang", "Paddle the river you live next to. Dragonboat sessions too.", "Book ahead for weekends — walk-ins rarely get a slot."],
 ["Little India Arcade", "Shopping", "near", 1970, 1.305677, 103.851547, "48 Serangoon Rd", "Henna, garlands, brassware and an excellent tissue prata stop.", ""],
 ["Kallang Park Connector", "Outdoors", "near", 2016, 1.338053, 103.862763, "Starts at Bendemeer Rd", "Ride or walk the river all the way down to Marina Barrage, about 7 km.", ""],
@@ -240,7 +234,7 @@ const P = [
 ["NEX", "Shopping", "far", 3612, 1.350769, 103.872296, "23 Serangoon Central", "The biggest mall on the North East Line, four stops up. Rooftop dog run included.", ""]
 ];
 
-const CATS = ["Food","Shopping","TCG","Games","Gyms","Sports","Outdoors","Heritage"];
+const CATS = ["Food","Shopping","TCG","Games","Gyms","Sports","Outdoors"];
 const DISTS = [["walk","Under 1.3 km"],["near","1.3 – 2.5 km"],["far","Over 2.5 km"]];
 const slug = s => s.toLowerCase();
 const css  = n => getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
