@@ -4,7 +4,9 @@ A mapped, filterable guide to 51 places within a walk, a bus, or a few North Eas
 
 **Live:** https://fang89.github.io/boon-keng-50/
 
-Every place is plotted from its real address, with distance rings at 500 m, 1 km, 2 km and 3 km from Boon Keng MRT, so you can see at a glance what is genuinely walkable. The category and distance filters drive the map and the list together; clicking a card flies the map to that pin.
+Every place is plotted from its real address, with distance rings at 500 m, 1 km, 2 km and 3 km from Boon Keng MRT, so you can see at a glance what is genuinely walkable.
+
+The radius filter is cumulative and matches those rings — picking **Under 1 km** shows everything within a kilometre and draws that ring solid. Category chips stack on top of it. Clicking a card flies the map to its pin, and a **Recenter** button appears on the map once Boon Keng scrolls out of view.
 
 ## What's in it
 
@@ -18,13 +20,13 @@ Every place is plotted from its real address, with distance rings at 500 m, 1 km
 | Sports | 4 |
 | Video game shops | 2 |
 
-By distance from Boon Keng MRT: **24** under 1.3 km, **22** between 1.3 and 2.5 km, **5** beyond 2.5 km. Nearest is Bendemeer Market at 134 m; furthest is NEX at 3.61 km.
+By radius from Boon Keng MRT: **8** under 500 m, **15** under 1 km, **33** under 2 km, **47** under 3 km. Nearest is Bendemeer Market at 134 m; the four beyond 3 km are Games Haven, Qisahn, Funan and NEX.
 
 ## How the distances work
 
 Coordinates come from [OneMap](https://www.onemap.gov.sg/), Singapore's national address database — not from hand-placed pins. Distances are straight-line (haversine) from Boon Keng MRT, so real walking is somewhat longer. Where a shop sits inside a larger building, the pin is the building: Sim Lim Square, Bugis+ and the hawker centres each hold several entries. Markers that share an address are fanned out about 24 m so all of them stay clickable; zoom in, or click the card, and they separate.
 
-The distance bands are derived from the computed numbers rather than assigned by hand, so they can't drift out of sync with the map.
+Radius bands are read straight off the computed metres rather than assigned by hand, so the filter, the rings and the list cannot drift out of sync.
 
 ## Running it
 
@@ -39,10 +41,10 @@ python3 -m http.server 8000
 Every place is one row in the `P` array near the bottom of `index.html`:
 
 ```js
-["Name", "Category", "walk|near|far", metres, lat, lng, "Address", "One-line blurb", "Optional tip"]
+["Name", "Category", metres, lat, lng, "Address", "One-line blurb", "Optional tip"]
 ```
 
-Categories must be one of `Food`, `Shopping`, `TCG`, `Games`, `Gyms`, `Sports`, `Outdoors`; each has a colour token in the CSS at the top of the file, used for both the card accent and the map marker. Chip counts, the headline number and the distance-band counts are all computed from the array, so adding a row is the only edit needed.
+Categories must be one of `Food`, `Shopping`, `TCG`, `Games`, `Gyms`, `Sports`, `Outdoors`; each has a colour token in the CSS at the top of the file, used for both the card accent and the map marker. Chip counts, the headline number and the radius counts are all computed from the array, so adding a row is the only edit needed. `metres` is the straight-line distance from Boon Keng MRT and is what the radius filter reads.
 
 To add a place, get its coordinates from OneMap:
 
