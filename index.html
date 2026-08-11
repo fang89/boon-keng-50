@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>50 Things To Do Around Boon Keng</title>
-<meta name="description" content="Fifty things worth doing within a walk, a bus or a few MRT stops of Boon Keng, Singapore — food, shopping, card shops, game shops, parks and old streets.">
+<title>Things To Do Around Boon Keng</title>
+<meta name="description" content="A mapped, filterable guide to things worth doing within a walk, a bus or a few MRT stops of Boon Keng, Singapore — food, shopping, card shops, game shops, gyms, parks and old streets.">
+<link rel="stylesheet" href="vendor/leaflet.css">
 <style>
 :root{
   --bg:#faf7f2; --card:#ffffff; --ink:#1c1917; --muted:#78716c;
-  --line:#e7e2da; --accent:#b45309; --shadow:0 1px 2px rgba(28,25,23,.06),0 8px 24px rgba(28,25,23,.05);
-  --food:#d97706; --shopping:#7c3aed; --tcg:#0891b2; --games:#dc2626;
-  --outdoors:#059669; --heritage:#be185d; --sports:#2563eb;
+  --line:#e7e2da; --accent:#b45309;
+  --shadow:0 1px 2px rgba(28,25,23,.06),0 8px 24px rgba(28,25,23,.05);
+  /* one category palette for cards and map markers alike, legible on both basemaps */
+  --food:#e8871a; --shopping:#8b5cf6; --tcg:#06b6d4; --games:#ef4444;
+  --outdoors:#10b981; --heritage:#ec4899; --sports:#3b82f6; --gyms:#84cc16;
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#121110; --card:#1c1a18; --ink:#f5f0e8; --muted:#a8a29e;
-    --line:#2e2a26; --accent:#f59e0b; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
-    --food:#f59e0b; --shopping:#a78bfa; --tcg:#22d3ee; --games:#f87171;
-    --outdoors:#34d399; --heritage:#f472b6; --sports:#60a5fa;
+    --line:#2e2a26; --accent:#f59e0b;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
   }
 }
 :root[data-theme="dark"]{
   --bg:#121110; --card:#1c1a18; --ink:#f5f0e8; --muted:#a8a29e;
-  --line:#2e2a26; --accent:#f59e0b; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
-  --food:#f59e0b; --shopping:#a78bfa; --tcg:#22d3ee; --games:#f87171;
-  --outdoors:#34d399; --heritage:#f472b6; --sports:#60a5fa;
+  --line:#2e2a26; --accent:#f59e0b;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -33,74 +34,91 @@ body{
   font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
   overflow-x:hidden;
 }
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 
 /* ---------- hero ---------- */
-header{padding:56px 0 8px;border-bottom:1px solid var(--line)}
+header{padding:52px 0 26px}
 .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:650;margin:0 0 14px}
-h1{font-size:clamp(34px,6.2vw,60px);line-height:1.02;letter-spacing:-.025em;margin:0 0 16px;font-weight:750}
-h1 .n{color:var(--accent)}
-.lede{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:56ch;margin:0 0 30px}
+h1{font-size:clamp(32px,5.8vw,56px);line-height:1.03;letter-spacing:-.025em;margin:0 0 16px;font-weight:750}
+h1 .n{color:var(--accent);font-variant-numeric:tabular-nums}
+.lede{font-size:clamp(16px,2vw,19px);color:var(--muted);max-width:58ch;margin:0}
 
-.rings{display:block;width:100%;max-width:560px;height:auto;margin:0 auto 34px}
-.rings .rl{fill:var(--muted);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:650}
-.rings .rc{fill:none;stroke:var(--line);stroke-width:1.5}
-.rings .rc.d{stroke-dasharray:3 5}
-.rings .home{fill:var(--accent)}
-.rings .hm{fill:var(--ink);font-size:11px;font-weight:700}
-.rings .cnt{fill:var(--ink);font-size:16px;font-weight:750}
+/* ---------- map ---------- */
+.mapshell{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+  box-shadow:var(--shadow);background:var(--card)}
+#map{height:clamp(400px,58vh,620px);width:100%;background:var(--card)}
+.leaflet-container{font:inherit;background:var(--card)}
+.leaflet-control-attribution{font-size:10px;background:color-mix(in srgb,var(--card) 85%,transparent)!important;color:var(--muted)!important}
+.leaflet-control-attribution a{color:var(--muted)!important}
+.leaflet-bar a{background:var(--card)!important;color:var(--ink)!important;border-color:var(--line)!important}
+.leaflet-bar a:hover{background:var(--bg)!important}
+.ringlab{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--muted);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);padding:1px 5px;border-radius:4px;white-space:nowrap}
+.homelab{font-size:11.5px;font-weight:750;color:var(--ink);
+  background:var(--bg);border:1px solid var(--line);padding:2px 8px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow)}
+.leaflet-popup-content-wrapper{background:var(--card);color:var(--ink);border-radius:12px;box-shadow:var(--shadow)}
+.leaflet-popup-tip{background:var(--card)}
+.leaflet-popup-content{margin:13px 15px;font-size:14px;line-height:1.5;min-width:190px}
+.pp-cat{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pc)}
+.pp-name{font-size:16px;font-weight:700;margin:2px 0 4px;letter-spacing:-.01em}
+.pp-meta{color:var(--muted);font-size:12.5px;margin:0 0 6px}
+.pp-blurb{margin:0 0 8px}
+.leaflet-popup-content a{color:var(--accent);font-weight:650;text-decoration:none;font-size:13px}
+.fitbtn{position:absolute;right:12px;bottom:26px;z-index:500;appearance:none;cursor:pointer;font:inherit;
+  font-size:12.5px;font-weight:650;padding:7px 13px;border-radius:999px;border:1px solid var(--line);
+  background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+.fitbtn:hover{border-color:var(--muted)}
 
 /* ---------- controls ---------- */
-.controls{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding:14px 0}
+.controls{position:sticky;top:0;z-index:600;background:color-mix(in srgb,var(--bg) 90%,transparent);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:13px 0;margin-top:26px}
 .rowlab{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:650;margin:0 10px 0 0;flex:0 0 auto}
 .chiprow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-bottom:8px}
 .chiprow:last-child{margin-bottom:0}
-.chip{
-  appearance:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;
+.chip{appearance:none;cursor:pointer;font:inherit;font-size:13px;font-weight:600;
   padding:5px 12px;border-radius:999px;border:1px solid var(--line);
-  background:var(--card);color:var(--muted);transition:.13s ease;line-height:1.4;
-}
+  background:var(--card);color:var(--muted);transition:.13s ease;line-height:1.4}
 .chip:hover{color:var(--ink);border-color:var(--muted)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.chip .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:1px;background:currentColor}
-.chip[aria-pressed="true"] .dot{background:var(--bg)}
-.chip.c-food .dot{background:var(--food)} .chip.c-shopping .dot{background:var(--shopping)}
-.chip.c-tcg .dot{background:var(--tcg)} .chip.c-games .dot{background:var(--games)}
-.chip.c-outdoors .dot{background:var(--outdoors)} .chip.c-heritage .dot{background:var(--heritage)}
-.chip.c-sports .dot{background:var(--sports)}
+.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;background:var(--cc,currentColor)}
+.chip[aria-pressed="true"] .dot{box-shadow:0 0 0 1.5px var(--bg)}
+.chip .k{opacity:.6;font-variant-numeric:tabular-nums;margin-left:5px;font-weight:550}
 .count{margin-left:auto;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;flex:0 0 auto}
+.clear{font-size:12.5px;color:var(--accent);background:none;border:0;cursor:pointer;font-weight:650;padding:5px 4px;font-family:inherit}
+.clear[hidden]{display:none}
 
 /* ---------- grid ---------- */
-main{padding:30px 0 10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(288px,1fr));gap:16px;list-style:none;padding:0;margin:0}
-.card{
-  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;
-  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px;position:relative;
-  border-top:3px solid var(--ct);transition:transform .15s ease,box-shadow .15s ease;
-}
-.card:hover{transform:translateY(-2px);box-shadow:0 2px 4px rgba(0,0,0,.06),0 14px 34px rgba(0,0,0,.09)}
+main{padding:28px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;list-style:none;padding:0;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:17px 18px 15px;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;position:relative;
+  border-top:3px solid var(--ct);transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
+.card:hover,.card:focus-visible{transform:translateY(-2px);box-shadow:0 2px 4px rgba(0,0,0,.06),0 14px 34px rgba(0,0,0,.09);outline:none}
+.card.on{border-color:var(--ct);box-shadow:0 0 0 2px color-mix(in srgb,var(--ct) 35%,transparent),var(--shadow)}
+.chead{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .num{font-size:11.5px;font-weight:750;color:var(--ct);font-variant-numeric:tabular-nums;letter-spacing:.06em}
+.dist{font-size:11.5px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 h2{margin:0;font-size:18px;line-height:1.25;letter-spacing:-.01em;font-weight:700}
 .where{margin:0;font-size:13px;color:var(--muted)}
-.where b{font-weight:650;color:var(--ct)}
-.blurb{margin:0;font-size:14.5px;color:var(--ink);opacity:.9}
+.blurb{margin:0;font-size:14.5px;opacity:.92}
 .tip{margin:0;font-size:13px;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
-.foot{margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.foot{margin-top:auto;padding-top:11px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .pill{font-size:11px;font-weight:650;letter-spacing:.05em;text-transform:uppercase;color:var(--ct);
-  background:color-mix(in srgb,var(--ct) 12%,transparent);padding:3px 9px;border-radius:999px}
-.map{font-size:13px;font-weight:650;color:var(--muted);text-decoration:none;white-space:nowrap}
-.map:hover{color:var(--accent);text-decoration:underline}
+  background:color-mix(in srgb,var(--ct) 14%,transparent);padding:3px 9px;border-radius:999px}
+.map-link{font-size:13px;font-weight:650;color:var(--muted);text-decoration:none;white-space:nowrap}
+.map-link:hover{color:var(--accent);text-decoration:underline}
 .empty{text-align:center;color:var(--muted);padding:60px 20px;font-size:15px}
 
-footer{border-top:1px solid var(--line);margin-top:48px;padding:30px 0 60px;color:var(--muted);font-size:13.5px}
+footer{border-top:1px solid var(--line);margin-top:46px;padding:28px 0 60px;color:var(--muted);font-size:13.5px}
 footer a{color:var(--muted)}
-footer p{margin:0 0 10px;max-width:70ch}
+footer p{margin:0 0 10px;max-width:72ch}
 .srcs{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px}
 @media (max-width:560px){
-  header{padding:38px 0 8px}
+  header{padding:36px 0 20px}
   .rowlab{display:none}
   .grid{grid-template-columns:1fr}
+  #map{height:56vh}
 }
 </style>
 </head>
@@ -109,30 +127,17 @@ footer p{margin:0 0 10px;max-width:70ch}
 <header>
   <div class="wrap">
     <p class="eyebrow">Boon Keng &middot; Kallang / Whampoa &middot; Singapore</p>
-    <h1><span class="n">50</span> things to do<br>around Boon Keng</h1>
-    <p class="lede">Everything here is within a walk, one bus, or a few stops on the North East Line. Filter by what you feel like and how far you want to go.</p>
-
-    <svg class="rings" viewBox="0 0 560 250" role="img" aria-label="Three distance rings around Boon Keng: 14 places within a walk, 26 one to two stops away, 10 three or more stops away.">
-      <circle class="rc" cx="120" cy="128" r="58"/>
-      <circle class="rc d" cx="120" cy="128" r="94"/>
-      <circle class="rc d" cx="120" cy="128" r="118"/>
-      <circle class="home" cx="120" cy="128" r="6"/>
-      <text class="hm" x="120" y="150" text-anchor="middle">Boon Keng</text>
-
-      <line class="rc" x1="182" y1="70" x2="330" y2="52"/>
-      <text class="cnt" x="340" y="50">14</text>
-      <text class="rl" x="366" y="50">under a 20-min walk</text>
-
-      <line class="rc" x1="212" y1="128" x2="330" y2="122"/>
-      <text class="cnt" x="340" y="120">26</text>
-      <text class="rl" x="366" y="120">1&ndash;2 stops or a bus</text>
-
-      <line class="rc" x1="196" y1="188" x2="330" y2="192"/>
-      <text class="cnt" x="340" y="190">10</text>
-      <text class="rl" x="366" y="190">3+ stops out</text>
-    </svg>
+    <h1><span class="n" id="hcount">—</span> things to do<br>around Boon Keng</h1>
+    <p class="lede">Every place below is plotted from its real address, with rings at 500&nbsp;m, 1&nbsp;km, 2&nbsp;km and 3&nbsp;km from Boon Keng MRT so you can see what&rsquo;s genuinely walkable. Filter the map and the list together.</p>
   </div>
 </header>
+
+<div class="wrap">
+  <div class="mapshell">
+    <div id="map"></div>
+    <button class="fitbtn" id="fit" type="button">Fit to view</button>
+  </div>
+</div>
 
 <div class="controls">
   <div class="wrap">
@@ -142,6 +147,7 @@ footer p{margin:0 0 10px;max-width:70ch}
     </div>
     <div class="chiprow" id="dists">
       <span class="rowlab">How far</span>
+      <button class="clear" id="clear" type="button" hidden>Clear filters</button>
     </div>
   </div>
 </div>
@@ -155,97 +161,173 @@ footer p{margin:0 0 10px;max-width:70ch}
 
 <footer>
   <div class="wrap">
-    <p>Hawker stalls close on rotation and the older ones shut when they sell out, so check before making a special trip. Shop units in Sim Lim Square and Bugis+ move around &mdash; confirm on the store&rsquo;s socials for anything you&rsquo;re travelling for.</p>
-    <p>Compiled August 2026. Corrections welcome via a pull request.</p>
+    <p>Distances are straight-line from Boon Keng MRT, so real walking is a little longer. Coordinates come from OneMap, Singapore&rsquo;s national address database; where a shop sits inside a larger building, the pin is the building. Markers sharing an address are fanned out slightly so all of them stay clickable.</p>
+    <p>Hawker stalls close on rotation and the older ones shut when they sell out. Shop units in Sim Lim Square and Bugis+ move around &mdash; confirm on the store&rsquo;s socials before travelling for one. Compiled August 2026; corrections welcome via pull request.</p>
     <div class="srcs">
+      <a href="https://www.onemap.gov.sg/">OneMap</a>
       <a href="https://www.homejourney.sg/blog/things-to-do-near-boon-keng-mrt-heritage-parks-food-homejourney">Boon Keng guide</a>
       <a href="https://singaporehawkercentres.com/bendemeer-market-food-centre/">Bendemeer Food Centre</a>
-      <a href="https://eatbook.sg/bendemeer-food-centre/">Eatbook</a>
       <a href="https://pcn.nparks.gov.sg/whampoa-pc/">NParks park connectors</a>
       <a href="https://www.bestinsingapore.co/guide-to-balestier/">Balestier guide</a>
       <a href="https://tcg.sg/posts/best-tcg-stores-singapore-2025-guide-tcgsg">TCG.SG store guide</a>
-      <a href="https://www.gameshaventcg.com/pages/our-stores">Games Haven stores</a>
-      <a href="https://toyorgame.com.sg/">TOG</a>
-      <a href="https://thesmartlocal.com/read/sim-lim-square/">Sim Lim Square guide</a>
+      <a href="https://hideoutcg.com/pages/contact">Hideout</a>
+      <a href="https://www.bffclimb.com/">BFF Climb</a>
+      <a href="https://www.activesgcircle.gov.sg/facilities/jalan-besar-activesg-gym">Jalan Besar ActiveSG</a>
     </div>
   </div>
 </footer>
 
+<script src="vendor/leaflet.js"></script>
 <script>
-const CATS = ["Food","Shopping","TCG","Games","Outdoors","Heritage","Sports"];
-const DISTS = [
-  ["walk","Walk it"],
-  ["near","1–2 stops"],
-  ["far","3+ stops"]
-];
-
+const HOME = [1.319940, 103.862053];
 const P = [
-// ---- within a walk ----
-[1,"Bendemeer Market & Food Centre","Food","walk","29 Bendemeer Rd · 5 min walk","The local canteen, and the single best reason to live here.","Go 7–9am. Half the good stalls are packed up by lunch."],
-[2,"Original Simon Road Hokkien Mee","Food","walk","Bendemeer Food Centre","The island-famous wet-style plate, made by the original family.",""],
-[3,"Bendemeer Prawn Noodle","Food","walk","Bendemeer Food Centre","Soup or dry, with punchy sambal and fried shallots on top.",""],
-[4,"Yong Xiang Carrot Cake","Food","walk","Bendemeer Food Centre","Order both black and white and settle the argument for good.",""],
-[5,"Chung Ping Chicken Rice","Food","walk","Bendemeer Food Centre","Unfussy, consistent, and cheaper than anywhere with a queue photo.",""],
-[6,"Whampoa Makan Place & Market","Food","walk","Blk 90–92 Whampoa Dr · 20 min walk","A sprawling old-school centre with a section that never closes.","Come at 3am. It is one of the few honest supper options left in the area."],
-[7,"Whitley Road Big Prawn Noodle","Food","walk","Whampoa Makan Place","The big-prawn bowl that built the name, at hawker prices.",""],
-[8,"Geylang Bahru Market & Food Centre","Food","walk","Blk 69 Geylang Bahru · 12 min walk","Across the river and almost entirely a residents-only crowd.",""],
-[9,"Bendemeer Shopping Mall","Shopping","walk","Bendemeer Rd","A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.",""],
-[10,"Kolam Ayer riverside deck","Outdoors","walk","Kallang River, behind the estate","Landscaped ABC Waters riverbank right at your back door.","Best light 30 minutes before sunset, looking downstream."],
-[11,"Kallang Park Connector","Outdoors","walk","Starts at Bendemeer Rd","Ride or walk the river all the way down to Marina Barrage, about 7 km.",""],
-[12,"Whampoa Park Connector","Outdoors","walk","Along Sungei Whampoa","The other direction — a green corridor through Jalan Rajah and Kim Keat.",""],
-[13,"St George’s Road SIT flats","Heritage","walk","St George’s Rd & Lane","1950s public housing from before the HDB existed. Almost nobody visits.",""],
-[14,"Boon Keng Road shophouse row","Heritage","walk","Boon Keng Rd","Pre-war terrace shophouses hiding in plain sight between the towers.",""],
-
-// ---- 1-2 stops / a bus ----
-[15,"City Square Mall","Shopping","near","180 Kitchener Rd · Farrer Park MRT","Your nearest full-size mall, one stop down and connected underground.","City Green sits right outside it — a real park bolted onto a shopping centre."],
-[17,"Mustafa Centre","Shopping","near","145 Syed Alwi Rd · Farrer Park","Open 24 hours and stocked like six shops crammed into one.","Go at 2am for the full experience. Bring patience for the aisles."],
-[18,"Tekka Centre","Food","near","665 Buffalo Rd · Little India","Wet market downstairs, biryani and fabric upstairs.",""],
-[19,"Little India Arcade","Shopping","near","48 Serangoon Rd","Henna, garlands, brassware and an excellent tissue prata stop.",""],
-[20,"Indian Heritage Centre","Heritage","near","5 Campbell Lane","Worth going for the building alone — the facade lights up at night.",""],
-[21,"Sun Yat Sen Nanyang Memorial Hall","Heritage","near","12 Tai Gin Rd · Balestier","A national monument villa that was once a revolutionary headquarters.","Free entry for Singaporeans."],
-[22,"Zhongshan Park","Outdoors","near","Ah Hood Rd · Balestier","Small and quiet. The enormous central banyan tree is the whole point.",""],
-[23,"Zhongshan Mall","Shopping","near","20 Ah Hood Rd","Handy pairing with the memorial hall next door — food court, supermarket, cinema.",""],
-[24,"Balestier Heritage Trail","Heritage","near","Balestier Rd, about 1.7 km","A self-guided loop past the neighbourhood’s best surviving buildings.","Stop at the Sim Kwong Ho shophouses and look up — the bat-and-peony plasterwork is the finest on the street."],
-[26,"Balestier lighting-shop strip","Shopping","near","Balestier Rd","Half a kilometre of nothing but chandeliers. Genuinely strange.",""],
-[28,"Loy Kee Best Chicken Rice","Food","near","342 Balestier Rd","One of the oldest names in the trade, still doing one thing properly.",""],
-[29,"Founder Bak Kut Teh","Food","near","347 Balestier Rd","Peppery Teochew style. Expect a queue and a wall of celebrity photos.",""],
-[30,"Loong Fatt Eating House","Food","near","639 Balestier Rd","Tau sar piah and kopi, cash only, shuts when it sells out.","Buy the pastries first, then sit down. They go before the coffee does."],
-[31,"Dong Po Colonial Café","Food","near","Balestier Rd","Retro Hainanese bakery of the mooncake-tin-and-formica school.",""],
-[32,"Wheeler’s Yard","Food","near","28 Lor Ampas","Bike café behind the most photographed blue door in Singapore.",""],
-[33,"Petain Road terrace houses","Heritage","near","Petain Rd · Jalan Besar","The most extravagant Peranakan tilework anywhere in the country.",""],
-[34,"Chye Seng Huat Hardware","Food","near","150 Tyrwhitt Rd","Specialty coffee inside a converted hardware shop. Jalan Besar’s anchor.","Then walk Tyrwhitt Rd end to end — a dozen shophouse cafés and bars in one stretch."],
-[36,"Jalan Besar Swimming Complex","Sports","near","100 Tyrwhitt Rd","A 1950s public pool still in daily use, for a couple of dollars.",""],
-[37,"Kallang Riverside Park","Outdoors","near","Kallang Riverside","River-mouth lawns looking back at the city skyline.",""],
-[38,"Kayak on the Kallang","Sports","near","Water-Venture Kallang","Paddle the river you live next to. Dragonboat sessions too.","Book ahead for weekends — walk-ins rarely get a slot."],
-[39,"National Stadium","Sports","near","1 Stadium Dr","Check the fixture list. The dome is worth one visit regardless.",""],
-[40,"OCBC Aquatic Centre","Sports","near","Singapore Sports Hub","Swim in an actual Olympic-spec competition pool during public hours.",""],
-[41,"Kallang Wave Mall","Shopping","near","1 Stadium Pl","Sports-leaning mall attached to the Hub, with the waterfront promenade outside.",""],
-[42,"Boulder+ at Aperia Mall","Sports","near","12 Kallang Ave","Indoor bouldering inside a small, calm mall most people drive past.",""],
-[43,"The Poiz Centre","Shopping","near","51 Upper Serangoon Rd · Potong Pasir","One stop up: a compact neighbourhood mall glued to the MRT exit.",""],
-[44,"Bidadari Park & Alkaff Lake","Outdoors","near","Bidadari · Woodleigh MRT","The newest big park on this side of town, and excellent for birds at dawn.","Go at first light. By 9am it is joggers and prams."],
-
-// ---- 3+ stops ----
-[45,"Sim Lim Square","Shopping","far","1 Rochor Canal Rd","Six floors of electronics, repairs, imports and hobby shops. The mothership.","Know the price before you walk in. Cash gets you further than a card."],
-[46,"CardGaiden","TCG","far","Sim Lim Square #03-52","Japanese Pokémon boosters and singles, Yu-Gi-Oh OCG, Vanguard, Weiss Schwarz, Digimon.","Restocks get announced on their socials, not the shelf."],
-[47,"Sim Lim card-shop crawl","TCG","far","Sim Lim Square, levels 3–4","Several card shops within one lift ride — the fastest way to price-check a single.",""],
-[48,"RetroNutz","Games","far","Sim Lim Square","Working retro consoles, Game Boys and CRT sets, curated by an owner who kept his own collection.",""],
-[49,"TOG (Toy Or Game)","TCG","far","Bugis+ #05-04/05/06, 201 Victoria St","The flagship: trading cards, anime merch and gunpla under one roof.",""],
-[50,"Games Haven","TCG","far","736A Geylang Rd · Paya Lebar","Singapore’s first WPN Premium store. The place to play Magic properly.","Check the event calendar before going — tables fill on tournament nights."],
-[51,"Inferno Gaming","TCG","far","8 Lor 7 Toa Payoh #01-287","Your nearest proper neighbourhood card shop, tucked into an HDB shopfront.",""],
-[52,"Qisahn","Games","far","The Adelphi, 1 Coleman St","Imports, pre-orders and trade-ins, run by people who actually play.",""],
-[53,"Funan","Shopping","far","107 North Bridge Rd","Tech and games mall rebuilt around a climbing wall and an indoor cycling path.",""],
-[54,"NEX","Shopping","far","23 Serangoon Central","The biggest mall on the North East Line, four stops up. Rooftop dog run included.",""]
+["Bendemeer Market & Food Centre", "Food", "walk", 134, 1.31944, 103.86302, "29 Bendemeer Rd", "The local canteen, and the single best reason to live here.", "Go 7–9am. Half the good stalls are packed up by lunch."],
+["Original Simon Road Hokkien Mee", "Food", "walk", 134, 1.319042, 103.862891, "Bendemeer Food Centre", "The island-famous wet-style plate, made by the original family.", ""],
+["Bendemeer Prawn Noodle", "Food", "walk", 134, 1.319288, 103.863229, "Bendemeer Food Centre", "Soup or dry, with punchy sambal and fried shallots on top.", ""],
+["Yong Xiang Carrot Cake", "Food", "walk", 134, 1.319288, 103.862811, "Bendemeer Food Centre", "Order both black and white and settle the argument for good.", ""],
+["Chung Ping Chicken Rice", "Food", "walk", 134, 1.319042, 103.863149, "Bendemeer Food Centre", "Unfussy, consistent, and cheaper than anywhere with a queue photo.", ""],
+["Bendemeer Shopping Mall", "Shopping", "walk", 149, 1.318838, 103.862816, "Bendemeer Rd", "A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.", ""],
+["Dungeon Performance", "Gyms", "walk", 356, 1.31714, 103.86311, "80 Bendemeer Rd #01-10", "3,600 sq ft of strength and conditioning inside the Wyse Active Hub badminton complex.", "Open 6am–11pm daily. Four minutes from the MRT exit."],
+["The Gym Pod @ Bendemeer", "Gyms", "walk", 356, 1.3167, 103.86311, "80 Bendemeer Rd", "Book a private pod by the hour. Useful when you'd rather nobody watched.", ""],
+["St George’s Road SIT flats", "Heritage", "walk", 388, 1.323403, 103.861631, "St George’s Rd & Lane", "1950s public housing from before the HDB existed. Almost nobody visits.", ""],
+["Boon Keng Road shophouse row", "Heritage", "walk", 563, 1.315476, 103.864442, "Boon Keng Rd", "Pre-war terrace shophouses hiding in plain sight between the towers.", ""],
+["Anytime Fitness Boon Keng", "Gyms", "walk", 617, 1.314806, 103.859952, "294A/B Lavender St", "24-hour card access, which is the entire reason to pick this one.", "Staffed 12–9pm weekdays, 11am–7pm weekends. Sign up inside those hours or nobody's there."],
+["Petain Road terrace houses", "Heritage", "walk", 742, 1.313671, 103.859755, "Petain Rd · Jalan Besar", "The most extravagant Peranakan tilework anywhere in the country.", ""],
+["Whampoa Makan Place & Market", "Food", "walk", 858, 1.323065, 103.854996, "Blk 90–92 Whampoa Dr", "A sprawling old-school centre with a section that never closes.", "Come at 3am. It is one of the few honest supper options left in the area."],
+["BFF Climb Bendemeer", "Gyms", "walk", 871, 1.31216, 103.862941, "CT Hub, 2 Kallang Ave #01-20", "Big bouldering gym with free harness rental and problems across every grade.", "Weekday afternoons are calm. Evenings and weekends are shoulder to shoulder."],
+["Geylang Bahru Market & Food Centre", "Food", "walk", 900, 1.321463, 103.870005, "Blk 69 Geylang Bahru", "Across the river and almost entirely a residents-only crowd.", ""],
+["Chye Seng Huat Hardware", "Food", "walk", 947, 1.31159, 103.860365, "150 Tyrwhitt Rd", "Specialty coffee inside a converted hardware shop. Jalan Besar’s anchor.", "Then walk Tyrwhitt Rd end to end — a dozen shophouse cafés and bars in one stretch."],
+["Whitley Road Big Prawn Noodle", "Food", "walk", 969, 1.323428, 103.85406, "Whampoa Makan Place", "The big-prawn bowl that built the name, at hawker prices.", ""],
+["Kolam Ayer riverside deck", "Outdoors", "walk", 987, 1.324061, 103.86992, "Kallang River, behind the estate", "Landscaped ABC Waters riverbank right at your back door.", "Best light 30 minutes before sunset, looking downstream."],
+["Jalan Besar Swimming Complex", "Sports", "walk", 1025, 1.310956, 103.859974, "100 Tyrwhitt Rd", "A 1950s public pool still in daily use, for a couple of dollars.", ""],
+["Dong Po Colonial Café", "Food", "walk", 1034, 1.32155, 103.852891, "Balestier Rd", "Retro Hainanese bakery of the mooncake-tin-and-formica school.", ""],
+["City Square Mall", "Shopping", "walk", 1123, 1.311421, 103.856624, "180 Kitchener Rd · Farrer Park MRT", "Your nearest full-size mall, one stop down and connected underground.", "City Green sits right outside it — a real park bolted onto a shopping centre."],
+["Balestier Heritage Trail", "Heritage", "walk", 1159, 1.322812, 103.852026, "Balestier Rd, about 1.7 km", "A self-guided loop past the neighbourhood’s best surviving buildings.", "Stop at the Sim Kwong Ho shophouses and look up — the bat-and-peony plasterwork is the finest on the street."],
+["Boulder+ at Aperia Mall", "Gyms", "walk", 1165, 1.309711, 103.864326, "12 Kallang Ave", "Indoor bouldering inside a small, calm mall most people drive past.", ""],
+["Jalan Besar ActiveSG Gym", "Gyms", "walk", 1176, 1.309522, 103.860211, "Jalan Besar Sports Centre, 100 Tyrwhitt Rd", "Public-rate gym, 7am–10pm daily. The cheapest honest workout in the area.", ""],
+["Whampoa Park Connector", "Outdoors", "walk", 1184, 1.326493, 103.853659, "Along Sungei Whampoa", "The other direction — a green corridor through Jalan Rajah and Kim Keat.", ""],
+["Loy Kee Best Chicken Rice", "Food", "walk", 1236, 1.324169, 103.851769, "342 Balestier Rd", "One of the oldest names in the trade, still doing one thing properly.", ""],
+["Wheeler’s Yard", "Food", "walk", 1266, 1.326625, 103.852834, "28 Lor Ampas", "Bike café behind the most photographed blue door in Singapore.", ""],
+["Agora Hobby", "TCG", "walk", 1270, 1.308522, 103.862045, "Blk 809 French Rd #05-164", "Trading cards plus the wider hobby shelf — models, supplies, singles.", "Weekend tournaments pull a real crowd. Check their socials for the schedule."],
+["Founder Bak Kut Teh", "Food", "near", 1317, 1.324295, 103.85104, "347 Balestier Rd", "Peppery Teochew style. Expect a queue and a wall of celebrity photos.", ""],
+["Hideout", "TCG", "near", 1318, 1.308117, 103.861189, "803 King George’s Ave #02-190", "Magic, Lorcana and Flesh and Blood, run by people who actually play them.", "Opens 6pm on Mondays, 1pm Tuesday to Saturday, and shuts at 6pm on Sundays."],
+["Mustafa Centre", "Shopping", "near", 1326, 1.310112, 103.855291, "145 Syed Alwi Rd · Farrer Park", "Open 24 hours and stocked like six shops crammed into one.", "Go at 2am for the full experience. Bring patience for the aisles."],
+["The Poiz Centre", "Shopping", "near", 1456, 1.331497, 103.868214, "51 Upper Serangoon Rd · Potong Pasir", "One stop up: a compact neighbourhood mall glued to the MRT exit.", ""],
+["Kallang Riverside Park", "Outdoors", "near", 1576, 1.30723, 103.868326, "Kallang Riverside", "River-mouth lawns looking back at the city skyline.", ""],
+["Sun Yat Sen Nanyang Memorial Hall", "Heritage", "near", 1881, 1.328154, 103.847264, "12 Tai Gin Rd · Balestier", "A national monument villa that was once a revolutionary headquarters.", "Free entry for Singaporeans."],
+["Zhongshan Mall", "Shopping", "near", 1891, 1.326945, 103.846554, "20 Ah Hood Rd", "Handy pairing with the memorial hall next door — food court, supermarket, cinema.", ""],
+["Zhongshan Park", "Outdoors", "near", 1917, 1.327108, 103.846374, "Ah Hood Rd · Balestier", "Small and quiet. The enormous central banyan tree is the whole point.", ""],
+["Indian Heritage Centre", "Heritage", "near", 1924, 1.305681, 103.852252, "5 Campbell Lane", "Worth going for the building alone — the facade lights up at night.", ""],
+["Kayak on the Kallang", "Sports", "near", 1942, 1.304358, 103.869936, "Water-Venture Kallang", "Paddle the river you live next to. Dragonboat sessions too.", "Book ahead for weekends — walk-ins rarely get a slot."],
+["Little India Arcade", "Shopping", "near", 1970, 1.305677, 103.851547, "48 Serangoon Rd", "Henna, garlands, brassware and an excellent tissue prata stop.", ""],
+["Kallang Park Connector", "Outdoors", "near", 2016, 1.338053, 103.862763, "Starts at Bendemeer Rd", "Ride or walk the river all the way down to Marina Barrage, about 7 km.", ""],
+["OCBC Aquatic Centre", "Sports", "near", 2022, 1.305175, 103.872677, "Singapore Sports Hub", "Swim in an actual Olympic-spec competition pool during public hours.", ""],
+["Tekka Centre", "Food", "near", 2031, 1.306247, 103.849956, "665 Buffalo Rd · Little India", "Wet market downstairs, biryani and fabric upstairs.", ""],
+["Inferno Gaming", "TCG", "near", 2085, 1.337881, 103.856613, "8 Lor 7 Toa Payoh #01-287", "Your nearest proper neighbourhood card shop, tucked into an HDB shopfront.", ""],
+["National Stadium", "Sports", "near", 2124, 1.304698, 103.873563, "1 Stadium Dr", "Check the fixture list. The dome is worth one visit regardless.", ""],
+["Sim Lim Square", "Shopping", "near", 2131, 1.3028, 103.85304, "1 Rochor Canal Rd", "Six floors of electronics, repairs, imports and hobby shops. The mothership.", "Know the price before you walk in. Cash gets you further than a card."],
+["CardGaiden", "TCG", "near", 2131, 1.30324, 103.85304, "Sim Lim Square #03-52", "Japanese Pokémon boosters and singles, Yu-Gi-Oh OCG, Vanguard, Weiss Schwarz, Digimon.", "Restocks get announced on their socials, not the shelf."],
+["Sim Lim card-shop crawl", "TCG", "near", 2131, 1.30302, 103.85282, "Sim Lim Square, levels 3–4", "Several card shops within one lift ride — the fastest way to price-check a single.", ""],
+["RetroNutz", "Games", "near", 2131, 1.30302, 103.85326, "Sim Lim Square", "Working retro consoles, Game Boys and CRT sets, curated by an owner who kept his own collection.", ""],
+["Balestier lighting-shop strip", "Shopping", "near", 2202, 1.326301, 103.843297, "Balestier Rd", "Half a kilometre of nothing but chandeliers. Genuinely strange.", ""],
+["Kallang Wave Mall", "Shopping", "near", 2245, 1.303075, 103.87315, "1 Stadium Pl", "Sports-leaning mall attached to the Hub, with the waterfront promenade outside.", ""],
+["Loong Fatt Eating House", "Food", "near", 2288, 1.326242, 103.84246, "639 Balestier Rd", "Tau sar piah and kopi, cash only, shuts when it sells out.", "Buy the pastries first, then sit down. They go before the coffee does."],
+["TOG (Toy Or Game)", "TCG", "near", 2422, 1.299604, 103.854242, "Bugis+ #05-04/05/06, 201 Victoria St", "The flagship: trading cards, anime merch and gunpla under one roof.", ""],
+["Bidadari Park & Alkaff Lake", "Outdoors", "far", 2657, 1.340296, 103.874561, "Bidadari · Woodleigh MRT", "The newest big park on this side of town, and excellent for birds at dawn.", "Go at first light. By 9am it is joggers and prams."],
+["Games Haven", "TCG", "far", 3366, 1.314845, 103.891904, "736A Geylang Rd · Paya Lebar", "Singapore’s first WPN Premium store. The place to play Magic properly.", "Check the event calendar before going — tables fill on tournament nights."],
+["Qisahn", "Games", "far", 3418, 1.291185, 103.851184, "The Adelphi, 1 Coleman St", "Imports, pre-orders and trade-ins, run by people who actually play.", ""],
+["Funan", "Shopping", "far", 3451, 1.291348, 103.84999, "107 North Bridge Rd", "Tech and games mall rebuilt around a climbing wall and an indoor cycling path.", ""],
+["NEX", "Shopping", "far", 3612, 1.350769, 103.872296, "23 Serangoon Central", "The biggest mall on the North East Line, four stops up. Rooftop dog run included.", ""]
 ];
 
+const CATS = ["Food","Shopping","TCG","Games","Gyms","Sports","Outdoors","Heritage"];
+const DISTS = [["walk","Under 1.3 km"],["near","1.3 – 2.5 km"],["far","Over 2.5 km"]];
 const slug = s => s.toLowerCase();
-const state = {cats:new Set(), dists:new Set()};
+const css  = n => getComputedStyle(document.documentElement).getPropertyValue("--"+n).trim();
+const km   = m => m < 1000 ? m + " m" : (m/1000).toFixed(2) + " km";
+const esc  = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mapsUrl = p => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(p[0] + " Singapore");
 
-function chip(row, cls, label, key, bag){
+const state = {cats:new Set(), dists:new Set()};
+const dark = () => document.documentElement.dataset.theme === "dark" ||
+  (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme:dark)").matches);
+
+/* ---------------- map ---------------- */
+const map = L.map("map", {scrollWheelZoom:false, zoomSnap:.25}).setView(HOME, 14);
+L.tileLayer(
+  "https://{s}.basemaps.cartocdn.com/" + (dark() ? "dark_all" : "light_all") + "/{z}/{x}/{y}{r}.png",
+  {maxZoom:19, subdomains:"abcd",
+   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'}
+).addTo(map);
+
+// distance rings
+const RINGS = [500, 1000, 2000, 3000];
+RINGS.forEach(r => {
+  L.circle(HOME, {radius:r, fill:false, color:css("muted"), weight:1,
+                  opacity:.4, dashArray:"3 6", interactive:false}).addTo(map);
+  const north = [HOME[0] + (r/111320), HOME[1]];
+  L.marker(north, {interactive:false, icon:L.divIcon({className:"", iconSize:null,
+    html:'<span class="ringlab">' + (r < 1000 ? r + " m" : r/1000 + " km") + '</span>'})}).addTo(map);
+});
+
+// home
+L.circleMarker(HOME, {radius:7, color:css("bg"), weight:3,
+  fillColor:css("accent"), fillOpacity:1, interactive:false}).addTo(map);
+L.marker(HOME, {interactive:false, zIndexOffset:900, icon:L.divIcon({className:"", iconSize:null,
+  iconAnchor:[-12, 9], html:'<span class="homelab">Boon Keng MRT</span>'})}).addTo(map);
+
+const layer = L.layerGroup().addTo(map);
+const markers = new Map();
+
+function popupHtml(p, i){
+  const [name,cat,,m,,,where,blurb] = p;
+  return '<div style="--pc:var(--'+slug(cat)+')">'
+    + '<div class="pp-cat">' + cat + '</div>'
+    + '<div class="pp-name">' + esc(name) + '</div>'
+    + '<p class="pp-meta">' + esc(where) + ' &middot; ' + km(m) + ' away</p>'
+    + '<p class="pp-blurb">' + esc(blurb) + '</p>'
+    + '<a href="' + mapsUrl(p) + '" target="_blank" rel="noopener">Open in Google Maps &rarr;</a></div>';
+}
+
+P.forEach((p, i) => {
+  const c = css(slug(p[1]));
+  const mk = L.circleMarker([p[4], p[5]], {
+    radius:7, color:css("bg"), weight:2, fillColor:c, fillOpacity:.95
+  }).bindPopup(popupHtml(p, i), {closeButton:true, autoPanPadding:[30,30]});
+  mk.on("click", () => highlight(i, false));
+  markers.set(i, mk);
+});
+
+// Fit the markers currently on the map. Capped at z16 so a single result
+// doesn't slam the view to street level.
+function fit(animate){
+  const pts = shownIdx().map(i => markers.get(i).getLatLng());
+  if (!pts.length) return;
+  pts.push(L.latLng(HOME));
+  map.fitBounds(L.latLngBounds(pts).pad(.12), {animate:!!animate, maxZoom:16});
+}
+document.getElementById("fit").onclick = () => fit(true);
+
+// Default framing is the 2 km core, where 52 of the 57 places sit. Fitting all
+// of them instead would push the zoom out far enough to turn the core into a blob.
+function frameCore(){
+  map.fitBounds(L.latLng(HOME).toBounds(4300), {animate:false});
+}
+
+/* ---------------- filters + list ---------------- */
+function shownIdx(){
+  const {cats, dists} = state;
+  return P.map((p, i) => i)
+          .filter(i => (!cats.size || cats.has(P[i][1])) && (!dists.size || dists.has(P[i][2])));
+}
+
+function chip(row, cls, label, key, bag, colorVar, n){
   const b = document.createElement("button");
   b.className = "chip " + cls;
   b.type = "button";
-  b.setAttribute("aria-pressed","false");
-  b.innerHTML = (cls.startsWith("c-") ? '<span class="dot"></span>' : '') + label;
+  b.setAttribute("aria-pressed", "false");
+  b.innerHTML = (colorVar ? '<span class="dot" style="--cc:var(--' + colorVar + ')"></span>' : '')
+              + label + '<span class="k">' + n + '</span>';
   b.onclick = () => {
     const on = b.getAttribute("aria-pressed") === "true";
     b.setAttribute("aria-pressed", on ? "false" : "true");
@@ -256,38 +338,76 @@ function chip(row, cls, label, key, bag){
   return b;
 }
 
-const catRow = document.getElementById("cats");
-const countEl = document.getElementById("count");
-CATS.forEach(c => catRow.insertBefore(chip(catRow, "c-"+slug(c), c, c, state.cats), countEl));
-const distRow = document.getElementById("dists");
-DISTS.forEach(([k,label]) => chip(distRow, "d-"+k, label, k, state.dists));
+const catRow = document.getElementById("cats"), countEl = document.getElementById("count");
+CATS.forEach(c => catRow.insertBefore(
+  chip(catRow, "c-"+slug(c), c, c, state.cats, slug(c), P.filter(p => p[1] === c).length), countEl));
 
-const grid = document.getElementById("grid");
-const emptyEl = document.getElementById("empty");
+const distRow = document.getElementById("dists"), clearBtn = document.getElementById("clear");
+DISTS.forEach(([k, label]) => distRow.insertBefore(
+  chip(distRow, "d-"+k, label, k, state.dists, null, P.filter(p => p[2] === k).length), clearBtn));
+
+clearBtn.onclick = () => {
+  state.cats.clear(); state.dists.clear();
+  document.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", "false"));
+  render();
+};
+
+const grid = document.getElementById("grid"), emptyEl = document.getElementById("empty");
+document.getElementById("hcount").textContent = P.length;
+
+let active = null;
+function highlight(i, pan){
+  active = i;
+  document.querySelectorAll(".card").forEach(c => c.classList.toggle("on", +c.dataset.i === i));
+  const mk = markers.get(i);
+  if (!layer.hasLayer(mk)) return;
+  // z17 pulls apart the markers that share a building (hawker stalls, Sim Lim shops)
+  if (pan) map.flyTo(mk.getLatLng(), Math.max(map.getZoom(), 17), {duration:.6});
+  mk.openPopup();
+  mk.bringToFront();
+}
 
 function render(){
-  const {cats,dists} = state;
-  const shown = P.filter(p => (!cats.size || cats.has(p[2])) && (!dists.size || dists.has(p[3])));
-  grid.innerHTML = shown.map((p,i) => {
-    const [,name,cat,dist,where,blurb,tip] = p;
-    const q = encodeURIComponent(name + " Singapore");
-    return `<li class="card" style="--ct:var(--${slug(cat)})">
-      <span class="num">${String(i+1).padStart(2,"0")}</span>
-      <h2>${name}</h2>
-      <p class="where">${where}</p>
-      <p class="blurb">${blurb}</p>
-      ${tip ? `<p class="tip">${tip}</p>` : ""}
-      <div class="foot">
-        <span class="pill">${cat}</span>
-        <a class="map" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">Map &rarr;</a>
-      </div>
-    </li>`;
+  const idx = shownIdx();
+
+  layer.clearLayers();
+  idx.forEach(i => layer.addLayer(markers.get(i)));
+
+  grid.innerHTML = idx.map((i, n) => {
+    const p = P[i], [name,cat,,m,,,where,blurb,tip] = p;
+    return '<li class="card" data-i="' + i + '" tabindex="0" style="--ct:var(--' + slug(cat) + ')">'
+      + '<div class="chead"><span class="num">' + String(n+1).padStart(2,"0") + '</span>'
+      + '<span class="dist">' + km(m) + '</span></div>'
+      + '<h2>' + esc(name) + '</h2>'
+      + '<p class="where">' + esc(where) + '</p>'
+      + '<p class="blurb">' + esc(blurb) + '</p>'
+      + (tip ? '<p class="tip">' + esc(tip) + '</p>' : '')
+      + '<div class="foot"><span class="pill">' + cat + '</span>'
+      + '<a class="map-link" href="' + mapsUrl(p) + '" target="_blank" rel="noopener">Directions &rarr;</a></div></li>';
   }).join("");
-  emptyEl.hidden = shown.length > 0;
-  const filtered = cats.size || dists.size;
-  countEl.textContent = filtered ? `${shown.length} of ${P.length}` : `${P.length} places`;
+
+  grid.querySelectorAll(".card").forEach(c => {
+    const go = e => { if (e.target.closest("a")) return; highlight(+c.dataset.i, true);
+                      document.querySelector(".mapshell").scrollIntoView({behavior:"smooth", block:"nearest"}); };
+    c.onclick = go;
+    c.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(e); } };
+  });
+
+  emptyEl.hidden = idx.length > 0;
+  const filtered = state.cats.size || state.dists.size;
+  clearBtn.hidden = !filtered;
+  countEl.textContent = filtered ? idx.length + " of " + P.length : P.length + " places";
+  if (active !== null) document.querySelectorAll(".card").forEach(c => c.classList.toggle("on", +c.dataset.i === active));
+  if (started && idx.length) fit(true);   // narrowing the filter should reframe the map
 }
+
+let started = false;
 render();
+frameCore();
+started = true;
+
+// the map is laid out before web fonts settle, so re-measure once everything has loaded
+addEventListener("load", () => { map.invalidateSize(); frameCore(); });
 </script>
 </body>
 </html>

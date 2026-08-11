@@ -1,0 +1,350 @@
+{
+ "Agora Hobby": {
+  "lat": 1.30852161705656,
+  "lng": 103.862045456763,
+  "matched": "809 FRENCH ROAD 7 ELEVEN KITCHENER COMPLEX",
+  "query": "809 FRENCH ROAD"
+ },
+ "Anytime Fitness Boon Keng": {
+  "lat": 1.31480578204609,
+  "lng": 103.859952234733,
+  "matched": "294A LAVENDER STREET SINGAPORE 338807",
+  "query": "294A LAVENDER STREET"
+ },
+ "BFF Climb Bendemeer": {
+  "lat": 1.31215967710055,
+  "lng": 103.86294146611,
+  "matched": "2 KALLANG AVENUE AGAPE METHODIST HOSPICE",
+  "query": "2 KALLANG AVENUE"
+ },
+ "Balestier Heritage Trail": {
+  "lat": 1.32281193728737,
+  "lng": 103.852026274201,
+  "matched": "279 BALESTIER ROAD BALESTIER POINT SINGAPORE 329727",
+  "query": "BALESTIER POINT"
+ },
+ "Balestier lighting-shop strip": {
+  "lat": 1.32630094883001,
+  "lng": 103.843297064863,
+  "matched": "605 BALESTIER ROAD SINGAPORE 329905",
+  "query": "605 BALESTIER ROAD"
+ },
+ "Bendemeer Market & Food Centre": {
+  "lat": 1.31921667890113,
+  "lng": 103.863020922593,
+  "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
+  "query": "BENDEMEER MARKET AND FOOD CENTRE"
+ },
+ "Bendemeer Prawn Noodle": {
+  "lat": 1.31921667890113,
+  "lng": 103.863020922593,
+  "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
+  "query": "BENDEMEER MARKET AND FOOD CENTRE"
+ },
+ "Bendemeer Shopping Mall": {
+  "lat": 1.31883815362848,
+  "lng": 103.862815823199,
+  "matched": "27 BENDEMEER ROAD BENDEMEER SHOPPING MALL",
+  "query": "BENDEMEER SHOPPING MALL"
+ },
+ "Bidadari Park & Alkaff Lake": {
+  "lat": 1.34029645061317,
+  "lng": 103.874560510788,
+  "matched": "BIDADARI PARK",
+  "query": "BIDADARI PARK"
+ },
+ "Boon Keng Road shophouse row": {
+  "lat": 1.31547606723072,
+  "lng": 103.864442453627,
+  "matched": "BOON KENG ROAD",
+  "query": "BOON KENG ROAD"
+ },
+ "Boulder+ at Aperia Mall": {
+  "lat": 1.3097112065077,
+  "lng": 103.864326436447,
+  "matched": "12 KALLANG AVENUE APERIA SINGAPORE 339511",
+  "query": "12 KALLANG AVENUE"
+ },
+ "CardGaiden": {
+  "lat": 1.3030242605718,
+  "lng": 103.853037814067,
+  "matched": "1 ROCHOR CANAL ROAD SIM LIM SQUARE SINGAPORE 188504",
+  "query": "SIM LIM SQUARE"
+ },
+ "Chung Ping Chicken Rice": {
+  "lat": 1.31921667890113,
+  "lng": 103.863020922593,
+  "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
+  "query": "BENDEMEER MARKET AND FOOD CENTRE"
+ },
+ "Chye Seng Huat Hardware": {
+  "lat": 1.31159010927258,
+  "lng": 103.860365162936,
+  "matched": "150 TYRWHITT ROAD PETAIN ROAD/TYRWHITT ROAD CONSERVATION AREA SINGAPORE 207563",
+  "query": "150 TYRWHITT ROAD"
+ },
+ "City Square Mall": {
+  "lat": 1.31142103107683,
+  "lng": 103.856624019991,
+  "matched": "180 KITCHENER ROAD CITY SQUARE MALL SINGAPORE 208539",
+  "query": "CITY SQUARE MALL"
+ },
+ "Dong Po Colonial Café": {
+  "lat": 1.32155004844572,
+  "lng": 103.852891297102,
+  "matched": "BALESTIER ROAD",
+  "query": "BALESTIER ROAD"
+ },
+ "Dungeon Performance": {
+  "lat": 1.31691578544271,
+  "lng": 103.863109192276,
+  "matched": "80 BENDEMEER ROAD SINGAPORE 339949",
+  "query": "80 BENDEMEER ROAD"
+ },
+ "Founder Bak Kut Teh": {
+  "lat": 1.32429514863598,
+  "lng": 103.851039925927,
+  "matched": "347 BALESTIER ROAD NEW ORCHID HOTEL SINGAPORE 329777",
+  "query": "347 BALESTIER ROAD"
+ },
+ "Funan": {
+  "lat": 1.29134759697794,
+  "lng": 103.849989790085,
+  "matched": "107 NORTH BRIDGE ROAD FUNAN SINGAPORE 179105",
+  "query": "FUNAN"
+ },
+ "Games Haven": {
+  "lat": 1.31484533561247,
+  "lng": 103.891903849194,
+  "matched": "736A GEYLANG ROAD GEYLANG CONSERVATION AREA SINGAPORE 389647",
+  "query": "736A GEYLANG ROAD"
+ },
+ "Geylang Bahru Market & Food Centre": {
+  "lat": 1.32146311046779,
+  "lng": 103.870005014547,
+  "matched": "69 GEYLANG BAHRU GEYLANG BAHRU MARKET AND FOOD CENTRE SINGAPORE 330069",
+  "query": "69 GEYLANG BAHRU"
+ },
+ "Hideout": {
+  "lat": 1.30811749102335,
+  "lng": 103.861188606169,
+  "matched": "803 KING GEORGE'S AVENUE SINGAPORE 200803",
+  "query": "803 KING GEORGE'S AVENUE"
+ },
+ "Indian Heritage Centre": {
+  "lat": 1.30568127839609,
+  "lng": 103.852251898056,
+  "matched": "5 CAMPBELL LANE INDIAN HERITAGE CENTRE SINGAPORE 209924",
+  "query": "INDIAN HERITAGE CENTRE"
+ },
+ "Inferno Gaming": {
+  "lat": 1.3378805011388,
+  "lng": 103.856612802183,
+  "matched": "8 LORONG 7 TOA PAYOH TOA PAYOH COURT SINGAPORE 310008",
+  "query": "8 LORONG 7 TOA PAYOH"
+ },
+ "Jalan Besar ActiveSG Gym": {
+  "lat": 1.30952190174503,
+  "lng": 103.860211336261,
+  "matched": "100 TYRWHITT ROAD JALAN BESAR SPORTS CENTRE",
+  "query": "100 TYRWHITT ROAD"
+ },
+ "Jalan Besar Swimming Complex": {
+  "lat": 1.31095629117606,
+  "lng": 103.859973806051,
+  "matched": "100 TYRWHITT ROAD JALAN BESAR SWIMMING COMPLEX SINGAPORE 207542",
+  "query": "JALAN BESAR SWIMMING COMPLEX"
+ },
+ "Kallang Park Connector": {
+  "lat": 1.33805277414557,
+  "lng": 103.862762506578,
+  "matched": "KALLANG PARK CONNECTOR",
+  "query": "KALLANG PARK CONNECTOR"
+ },
+ "Kallang Riverside Park": {
+  "lat": 1.30722998960615,
+  "lng": 103.868325680607,
+  "matched": "KALLANG RIVERSIDE PARK",
+  "query": "KALLANG RIVERSIDE PARK"
+ },
+ "Kallang Wave Mall": {
+  "lat": 1.30307515150401,
+  "lng": 103.873149707591,
+  "matched": "1 STADIUM PLACE KALLANG WAVE MALL SINGAPORE 397628",
+  "query": "KALLANG WAVE MALL"
+ },
+ "Kayak on the Kallang": {
+  "lat": 1.30435821251939,
+  "lng": 103.869935831599,
+  "matched": "10 STADIUM LANE KALLANG WATER SPORT CENTRE SINGAPORE 397774",
+  "query": "10 STADIUM LANE"
+ },
+ "Kolam Ayer riverside deck": {
+  "lat": 1.32406063534817,
+  "lng": 103.869919586753,
+  "matched": "1 GEYLANG BAHRU LANE KOLAM AYER COMMUNITY CLUB SINGAPORE 339631",
+  "query": "KOLAM AYER"
+ },
+ "Little India Arcade": {
+  "lat": 1.30567687653381,
+  "lng": 103.851547006296,
+  "matched": "48 SERANGOON ROAD LITTLE INDIA ARCADE SINGAPORE 217959",
+  "query": "LITTLE INDIA ARCADE"
+ },
+ "Loong Fatt Eating House": {
+  "lat": 1.3262419336172,
+  "lng": 103.842459823866,
+  "matched": "639 BALESTIER ROAD SINGAPORE 329922",
+  "query": "639 BALESTIER ROAD"
+ },
+ "Loy Kee Best Chicken Rice": {
+  "lat": 1.32416941474156,
+  "lng": 103.851769354283,
+  "matched": "342 BALESTIER ROAD SINGAPORE 329774",
+  "query": "342 BALESTIER ROAD"
+ },
+ "Mustafa Centre": {
+  "lat": 1.31011213190394,
+  "lng": 103.855290873926,
+  "matched": "145 SYED ALWI ROAD MUSTAFA CENTRE SINGAPORE 207704",
+  "query": "MUSTAFA CENTRE"
+ },
+ "NEX": {
+  "lat": 1.35076935257845,
+  "lng": 103.872296143862,
+  "matched": "23 SERANGOON CENTRAL NEX SINGAPORE 556083",
+  "query": "NEX"
+ },
+ "National Stadium": {
+  "lat": 1.30469818126318,
+  "lng": 103.873562593499,
+  "matched": "1 STADIUM DRIVE NATIONAL STADIUM SINGAPORE 397629",
+  "query": "NATIONAL STADIUM"
+ },
+ "OCBC Aquatic Centre": {
+  "lat": 1.30517479255445,
+  "lng": 103.872677135475,
+  "matched": "7 STADIUM DRIVE OCBC AQUATIC CENTRE SINGAPORE 397632",
+  "query": "OCBC AQUATIC CENTRE"
+ },
+ "Original Simon Road Hokkien Mee": {
+  "lat": 1.31921667890113,
+  "lng": 103.863020922593,
+  "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
+  "query": "BENDEMEER MARKET AND FOOD CENTRE"
+ },
+ "Petain Road terrace houses": {
+  "lat": 1.3136708488313,
+  "lng": 103.859754586538,
+  "matched": "403 JALAN BESAR PETAIN ROAD/TYRWHITT ROAD CONSERVATION AREA SINGAPORE 209010",
+  "query": "PETAIN ROAD"
+ },
+ "Qisahn": {
+  "lat": 1.29118503658447,
+  "lng": 103.851184338699,
+  "matched": "1 COLEMAN STREET THE ADELPHI SINGAPORE 179803",
+  "query": "THE ADELPHI"
+ },
+ "RetroNutz": {
+  "lat": 1.3030242605718,
+  "lng": 103.853037814067,
+  "matched": "1 ROCHOR CANAL ROAD SIM LIM SQUARE SINGAPORE 188504",
+  "query": "SIM LIM SQUARE"
+ },
+ "Sim Lim Square": {
+  "lat": 1.3030242605718,
+  "lng": 103.853037814067,
+  "matched": "1 ROCHOR CANAL ROAD SIM LIM SQUARE SINGAPORE 188504",
+  "query": "SIM LIM SQUARE"
+ },
+ "Sim Lim card-shop crawl": {
+  "lat": 1.3030242605718,
+  "lng": 103.853037814067,
+  "matched": "1 ROCHOR CANAL ROAD SIM LIM SQUARE SINGAPORE 188504",
+  "query": "SIM LIM SQUARE"
+ },
+ "St George’s Road SIT flats": {
+  "lat": 1.32340263694069,
+  "lng": 103.86163080083,
+  "matched": "1 SAINT GEORGE'S ROAD SINGAPORE 320001",
+  "query": "ST GEORGE'S ROAD"
+ },
+ "Sun Yat Sen Nanyang Memorial Hall": {
+  "lat": 1.32815361311294,
+  "lng": 103.847263651155,
+  "matched": "12 TAI GIN ROAD SUN YAT SEN NANYANG MEMORIAL HALL SINGAPORE 327874",
+  "query": "SUN YAT SEN NANYANG MEMORIAL HALL"
+ },
+ "TOG (Toy Or Game)": {
+  "lat": 1.29960368990297,
+  "lng": 103.854242347489,
+  "matched": "201 VICTORIA STREET BUGIS+ SINGAPORE 188067",
+  "query": "BUGIS+"
+ },
+ "Tekka Centre": {
+  "lat": 1.30624722914968,
+  "lng": 103.849956033902,
+  "matched": "662 BUFFALO ROAD ZHUJIAO CENTRE (TEKKA MARKET) SINGAPORE 210662",
+  "query": "TEKKA CENTRE"
+ },
+ "The Gym Pod @ Bendemeer": {
+  "lat": 1.31691578544271,
+  "lng": 103.863109192276,
+  "matched": "80 BENDEMEER ROAD SINGAPORE 339949",
+  "query": "80 BENDEMEER ROAD"
+ },
+ "The Poiz Centre": {
+  "lat": 1.33149708073624,
+  "lng": 103.86821402533,
+  "matched": "51 UPPER SERANGOON ROAD THE POIZ CENTRE SINGAPORE 347697",
+  "query": "THE POIZ CENTRE"
+ },
+ "Whampoa Makan Place & Market": {
+  "lat": 1.32306493801159,
+  "lng": 103.854996183556,
+  "matched": "90 WHAMPOA DRIVE WHAMPOA DRIVE MAKAN PLACE SINGAPORE 320090",
+  "query": "90 WHAMPOA DRIVE"
+ },
+ "Whampoa Park Connector": {
+  "lat": 1.3264930340338,
+  "lng": 103.853659096541,
+  "matched": "WHAMPOA PARK CONNECTOR",
+  "query": "WHAMPOA PARK CONNECTOR"
+ },
+ "Wheeler’s Yard": {
+  "lat": 1.32662544806737,
+  "lng": 103.852833629451,
+  "matched": "28 LORONG AMPAS SINGAPORE 328781",
+  "query": "28 LORONG AMPAS"
+ },
+ "Whitley Road Big Prawn Noodle": {
+  "lat": 1.32342818718207,
+  "lng": 103.854060197812,
+  "matched": "91 WHAMPOA DRIVE WHAMPOA DRIVE MAKAN PLACE SINGAPORE 320091",
+  "query": "91 WHAMPOA DRIVE"
+ },
+ "Yong Xiang Carrot Cake": {
+  "lat": 1.31921667890113,
+  "lng": 103.863020922593,
+  "matched": "29 BENDEMEER ROAD BENDEMEER MARKET AND FOOD CENTRE SINGAPORE 330029",
+  "query": "BENDEMEER MARKET AND FOOD CENTRE"
+ },
+ "Zhongshan Mall": {
+  "lat": 1.32694504456951,
+  "lng": 103.846554377679,
+  "matched": "20 AH HOOD ROAD ZHONGSHAN MALL",
+  "query": "ZHONGSHAN MALL"
+ },
+ "Zhongshan Park": {
+  "lat": 1.32710813506067,
+  "lng": 103.846374256983,
+  "matched": "18 AH HOOD ROAD HIAP HOE BUILDING AT ZHONGSHAN PARK",
+  "query": "ZHONGSHAN PARK"
+ },
+ "__HOME__": {
+  "lat": 1.31993957653291,
+  "lng": 103.862052698446,
+  "matched": "900 SERANGOON ROAD BOON KENG MRT STATION",
+  "query": "BOON KENG MRT STATION"
+ }
+}
