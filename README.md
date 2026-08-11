@@ -1,12 +1,14 @@
 # Things To Do Around Boon Keng
 
-A mapped, filterable guide to 64 places within a walk, a bus, or a few North East Line stops of Boon Keng, Singapore.
+A mapped, filterable guide to 68 places within a walk, a bus, or a few North East Line stops of Boon Keng, Singapore.
 
 **Live:** https://fang89.github.io/boon-keng-50/
 
 Every place is plotted from its real address. The triangle on the map is home; the rings around it are 500 m, 1 km, 2 km and 3 km, so you can see at a glance what is genuinely walkable.
 
-The radius filter is cumulative and matches those rings — picking **Under 1 km** shows everything within a kilometre and draws that ring solid. Category chips stack on top of it. Clicking a card flies the map to its pin, and a **Recenter** button appears once home scrolls out of view.
+The radius filter is cumulative and matches those rings — picking **Under 1 km** shows everything within a kilometre and draws that ring solid. Category chips stack on top of it.
+
+Map interaction: wheel-zoom switches on once you click into the map, so the page still scrolls normally when the cursor merely passes over it; leaving the map hands scrolling back. Marker names appear automatically once you zoom past ~z15 or narrow to a small result set, and the **Names** button forces them on at any zoom. Clicking a marker or a card draws a dashed line from home to it, labelled with the distance. **Recenter** appears once home scrolls out of view.
 
 ## What's in it
 
@@ -17,11 +19,11 @@ The radius filter is cumulative and matches those rings — picking **Under 1 km
 | TCG / card shops | 7 |
 | Games — board game cafés, arcades, game shops | 7 |
 | Outdoors | 7 |
-| Gyms | 6 |
+| Gyms | 10 |
 | Drinks — coffee & bars | 5 |
 | Courts & Pools | 4 |
 
-By radius: **10** under 500 m, **23** under 1 km, **47** under 2 km, **59** under 3 km. Nearest is Dungeon Performance at 187 m. The five beyond 3 km are Bidadari Park, Qisahn, Funan, Games Haven and NEX.
+By radius: **12** under 500 m, **26** under 1 km, **51** under 2 km, **63** under 3 km. Nearest is Dungeon Performance at 187 m. The five beyond 3 km are Bidadari Park, Qisahn, Funan, Games Haven and NEX.
 
 ### Open late
 

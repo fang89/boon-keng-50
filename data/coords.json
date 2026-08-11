@@ -29,6 +29,12 @@
   "matched": "2 KALLANG AVENUE AGAPE METHODIST HOSPICE",
   "query": "2 KALLANG AVENUE"
  },
+ "BFT Kallang Bahru": {
+  "lat": 1.31451899650064,
+  "lng": 103.860225473169,
+  "matched": "286 LAVENDER STREET SINGAPORE 338803",
+  "query": "286 LAVENDER STREET"
+ },
  "Balestier lighting-shop strip": {
   "lat": 1.32630094883001,
   "lng": 103.843297064863,
@@ -143,6 +149,12 @@
   "matched": "69 GEYLANG BAHRU GEYLANG BAHRU MARKET AND FOOD CENTRE SINGAPORE 330069",
   "query": "69 GEYLANG BAHRU"
  },
+ "Ghetto Fitness": {
+  "lat": 1.31265274733728,
+  "lng": 103.859550277232,
+  "matched": "363A JALAN BESAR SINGAPORE 208994",
+  "query": "363A JALAN BESAR"
+ },
  "Hideout": {
   "lat": 1.30811749102335,
   "lng": 103.861188606169,
@@ -154,6 +166,12 @@
   "lng": 103.856612802183,
   "matched": "8 LORONG 7 TOA PAYOH TOA PAYOH COURT SINGAPORE 310008",
   "query": "8 LORONG 7 TOA PAYOH"
+ },
+ "Innervate Fitness": {
+  "lat": 1.31976779421033,
+  "lng": 103.86508483849,
+  "matched": "994 BENDEMEER ROAD B CENTRAL SINGAPORE 339943",
+  "query": "994 BENDEMEER ROAD"
  },
  "Jalan Besar ActiveSG Gym": {
   "lat": 1.30952190174503,
@@ -250,6 +268,12 @@
   "lng": 103.873562593499,
   "matched": "1 STADIUM DRIVE NATIONAL STADIUM SINGAPORE 397629",
   "query": "NATIONAL STADIUM"
+ },
+ "Neue Fit": {
+  "lat": 1.30307515150401,
+  "lng": 103.873149707591,
+  "matched": "1 STADIUM PLACE KALLANG WAVE MALL SINGAPORE 397628",
+  "query": "KALLANG WAVE MALL"
  },
  "OCBC Aquatic Centre": {
   "lat": 1.30517479255445,

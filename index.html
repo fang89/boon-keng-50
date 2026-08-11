@@ -116,6 +116,25 @@ main{padding:28px 0 10px}
   padding:1px 6px;border-radius:999px;margin-left:6px}
 /* home marker sits above everything else on the map */
 .homepin{filter:drop-shadow(0 2px 5px rgba(0,0,0,.35))}
+
+/* Marker name labels. Hidden by default and revealed once the map is zoomed in
+   far enough (or the result set is small enough) that they don't collide. */
+.leaflet-tooltip.mlab{display:none;background:color-mix(in srgb,var(--bg) 84%,transparent);
+  color:var(--ink);border:0;border-radius:5px;padding:0 5px;font-size:10.5px;font-weight:650;
+  line-height:16px;white-space:nowrap;box-shadow:none;pointer-events:none;opacity:1}
+.leaflet-tooltip.mlab::before{display:none}
+.labels-on .leaflet-tooltip.mlab{display:block}
+
+/* dashed run from home to whatever is selected */
+.distwrap{display:flex;align-items:center;justify-content:center;width:88px;height:24px}
+.distlab{font-size:11px;font-weight:750;color:#fff;background:var(--accent);
+  padding:2px 9px;border-radius:999px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+
+.zoomhint{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:500;
+  font-size:12px;font-weight:650;padding:5px 12px;border-radius:999px;
+  background:color-mix(in srgb,var(--card) 92%,transparent);color:var(--muted);
+  border:1px solid var(--line);box-shadow:var(--shadow);pointer-events:none;transition:opacity .25s ease}
+.zoomhint.off{opacity:0}
 h2{margin:0;font-size:18px;line-height:1.25;letter-spacing:-.01em;font-weight:700}
 .where{margin:0;font-size:13px;color:var(--muted)}
 .blurb{margin:0;font-size:14.5px;opacity:.92}
@@ -152,7 +171,9 @@ footer p{margin:0 0 10px;max-width:72ch}
 <div class="wrap">
   <div class="mapshell">
     <div id="map"></div>
+    <div class="zoomhint" id="zoomhint">Click the map to scroll-zoom</div>
     <div class="mapbtns">
+      <button class="mapbtn" id="names" type="button">Names</button>
       <button class="mapbtn" id="recenter" type="button">&#9678; Recenter</button>
       <button class="mapbtn" id="fit" type="button">Fit to view</button>
     </div>
@@ -205,13 +226,16 @@ const P = [
 ["The Gym Pod @ Bendemeer", "Gyms", 187, 1.3167, 103.86311, "80 Bendemeer Rd", "Book a private pod by the hour. Useful when you'd rather nobody watched.", "", 1],
 ["Anytime Fitness Boon Keng", "Gyms", 249, 1.314806, 103.859952, "294A/B Lavender St", "24-hour card access, which is the entire reason to pick this one.", "Staffed 12–9pm weekdays, 11am–7pm weekends. Sign up inside those hours or nobody's there.", 1],
 ["Zamas", "Food", 249, 1.315697, 103.85938, "324 Lavender St", "Late-night mainstay that stays crowded well past the point most kitchens have shut.", "", 1],
+["BFT Kallang Bahru", "Gyms", 255, 1.314519, 103.860225, "286 Lavender St", "Coached group strength training in fixed 50-minute blocks, on progressive programming.", "Third-party directories still list a CT Hub unit; the brand's own site says Lavender St.", 0],
 ["Bendemeer Shopping Mall", "Shopping", 306, 1.318838, 103.862816, "Bendemeer Rd", "A deliberately unglamorous neighbourhood mall — provision shops, a clinic, a barber.", "", 0],
 ["Bendemeer Market & Food Centre", "Food", 353, 1.31944, 103.86302, "29 Bendemeer Rd", "The local canteen, and the single best reason to live here.", "Go 7–9am. Half the good stalls are packed up by lunch.", 0],
 ["Original Simon Road Hokkien Mee", "Food", 353, 1.319042, 103.862891, "Bendemeer Food Centre", "The island-famous wet-style plate, made by the original family.", "", 0],
 ["Bendemeer Prawn Noodle", "Food", 353, 1.319288, 103.863229, "Bendemeer Food Centre", "Soup or dry, with punchy sambal and fried shallots on top.", "", 0],
 ["Yong Xiang Carrot Cake", "Food", 353, 1.319288, 103.862811, "Bendemeer Food Centre", "Order both black and white and settle the argument for good.", "", 0],
 ["Chung Ping Chicken Rice", "Food", 353, 1.319042, 103.863149, "Bendemeer Food Centre", "Unfussy, consistent, and cheaper than anywhere with a queue photo.", "", 0],
+["Ghetto Fitness", "Gyms", 472, 1.312653, 103.85955, "363A Jalan Besar", "Muay Thai, boxing and Dutch kickboxing, with private lessons if you'd rather skip the class.", "", 0],
 ["BFF Climb Bendemeer", "Gyms", 501, 1.31216, 103.862941, "CT Hub, 2 Kallang Ave #01-20", "Big bouldering gym with free harness rental and problems across every grade.", "Weekday afternoons are calm. Evenings and weekends are shoulder to shoulder.", 0],
+["Innervate Fitness", "Gyms", 545, 1.319768, 103.865085, "994 Bendemeer Rd #01-04, B Central", "A proper CrossFit box five minutes up the road, coached rather than open-gym.", "", 0],
 ["Chye Seng Huat Hardware", "Drinks", 552, 1.31159, 103.860365, "150 Tyrwhitt Rd", "Specialty coffee inside a converted hardware shop. Jalan Besar’s anchor.", "Then walk Tyrwhitt Rd end to end — a dozen shophouse cafés and bars in one stretch.", 0],
 ["Druggists", "Drinks", 619, 1.311162, 103.859679, "119 Tyrwhitt Rd", "Craft beer on a rotating tap wall, with har cheong gai to go with it.", "", 0],
 ["Jalan Besar Swimming Complex", "Courts & Pools", 631, 1.310956, 103.859974, "100 Tyrwhitt Rd", "A 1950s public pool still in daily use, for a couple of dollars.", "", 0],
@@ -247,7 +271,8 @@ const P = [
 ["The Poiz Centre", "Shopping", 1835, 1.331497, 103.868214, "51 Upper Serangoon Rd · Potong Pasir", "One stop up: a compact neighbourhood mall glued to the MRT exit.", "", 0],
 ["National Stadium", "Courts & Pools", 1870, 1.304698, 103.873563, "1 Stadium Dr", "Check the fixture list. The dome is worth one visit regardless.", "", 0],
 ["Kallang Wave Mall", "Shopping", 1970, 1.3033, 103.87315, "1 Stadium Pl", "Sports-leaning mall attached to the Hub, with the waterfront promenade outside.", "", 0],
-["Paco Funworld", "Games", 1970, 1.30286, 103.87315, "Kallang Wave Mall, 1 Stadium Pl", "The nearest arcade to home — claw machines and ticket games, attached to the Sports Hub.", "", 0],
+["Paco Funworld", "Games", 1970, 1.30297, 103.872959, "Kallang Wave Mall, 1 Stadium Pl", "The nearest arcade to home — claw machines and ticket games, attached to the Sports Hub.", "", 0],
+["Neue Fit", "Gyms", 1970, 1.30297, 103.873341, "Kallang Wave Mall #02-07", "Two martial arts halls and a studio — BJJ, Muay Thai, HIIT and yoga in 4,000 sq ft.", "10.30am–9.30pm weekdays, closing at 6pm on weekends.", 0],
 ["Zhongshan Mall", "Shopping", 2032, 1.326945, 103.846554, "20 Ah Hood Rd", "Handy pairing with the memorial hall next door — food court, supermarket, cinema.", "", 0],
 ["TOG (Toy Or Game)", "TCG", 2037, 1.29949, 103.854431, "Bugis+ #05-04/05/06, 201 Victoria St", "The flagship: trading cards, anime merch and gunpla under one roof.", "", 0],
 ["Battle Bunker", "Games", 2037, 1.29982, 103.85424, "Bugis+, 201 Victoria St, Level 3", "Game store and open play arena — rent from the shelf or bring your own, up to ten to a table.", "From about $10 a head. Runs regular events, so check before turning up with a group.", 0],
@@ -283,7 +308,14 @@ const dark = () => document.documentElement.dataset.theme === "dark" ||
   (document.documentElement.dataset.theme !== "light" && matchMedia("(prefers-color-scheme:dark)").matches);
 
 /* ---------------- map ---------------- */
-const map = L.map("map", {scrollWheelZoom:false, zoomSnap:.25}).setView(HOME, 14);
+const map = L.map("map", {scrollWheelZoom:false, zoomSnap:.25, doubleClickZoom:true,
+                          touchZoom:true, keyboard:true, zoomDelta:.5}).setView(HOME, 14);
+
+// Wheel-zoom is off until you click into the map, so the page still scrolls
+// normally when you pass over it. Leaving the map hands scrolling back.
+const hint = document.getElementById("zoomhint"), cont = map.getContainer();
+cont.addEventListener("click", () => { map.scrollWheelZoom.enable(); hint.classList.add("off"); });
+cont.addEventListener("mouseleave", () => { map.scrollWheelZoom.disable(); hint.classList.remove("off"); });
 L.tileLayer(
   "https://{s}.basemaps.cartocdn.com/" + (dark() ? "dark_all" : "light_all") + "/{z}/{x}/{y}{r}.png",
   {maxZoom:19, subdomains:"abcd",
@@ -328,6 +360,34 @@ L.marker(HOME, {interactive:false, zIndexOffset:1001, icon:L.divIcon({className:
 const layer = L.layerGroup().addTo(map);
 const markers = new Map();
 
+// A dashed run from home to the selected place, with the distance on it.
+let link = null, linkLab = null;
+function clearLink(){
+  if (link) map.removeLayer(link);
+  if (linkLab) map.removeLayer(linkLab);
+  link = linkLab = null;
+}
+function drawLink(i){
+  clearLink();
+  const p = P[i], to = L.latLng(p[3], p[4]);
+  link = L.polyline([L.latLng(HOME), to], {color:css(slug(p[1])), weight:2.5,
+    dashArray:"5 7", opacity:.95, interactive:false}).addTo(map);
+  linkLab = L.marker([(HOME[0] + to.lat)/2, (HOME[1] + to.lng)/2], {
+    interactive:false, zIndexOffset:1200,
+    icon:L.divIcon({className:"", iconSize:[88,24], iconAnchor:[44,12],
+      html:'<div class="distwrap"><span class="distlab">' + km(p[2]) + '</span></div>'})
+  }).addTo(map);
+}
+
+// Names are revealed once they can be read without colliding, and the Names
+// button forces them on at any zoom.
+let namesForced = false;
+function syncLabels(){
+  const on = namesForced || map.getZoom() >= 15 || shownIdx().length <= 14;
+  cont.classList.toggle("labels-on", on);
+}
+map.on("zoomend", syncLabels);
+
 function popupHtml(p, i){
   const [name,cat,m,,,where,blurb,,late] = p;
   return '<div style="--pc:var(--'+slug(cat)+')">'
@@ -343,7 +403,8 @@ P.forEach((p, i) => {
   const c = css(slug(p[1]));
   const mk = L.circleMarker([p[3], p[4]], {
     radius:7, color:css("bg"), weight:2, fillColor:c, fillOpacity:.95
-  }).bindPopup(popupHtml(p, i), {closeButton:true, autoPanPadding:[30,30]});
+  }).bindPopup(popupHtml(p, i), {closeButton:true, autoPanPadding:[30,30]})
+    .bindTooltip(p[0], {permanent:true, direction:"right", offset:[9,0], className:"mlab"});
   mk.on("click", () => highlight(i, false));
   markers.set(i, mk);
 });
@@ -366,7 +427,15 @@ function frameCore(animate){
 
 // Offer a way back once Boon Keng is no longer on screen.
 const recenterBtn = document.getElementById("recenter");
-recenterBtn.onclick = () => { map.closePopup(); frameCore(true); };
+recenterBtn.onclick = () => { map.closePopup(); clearLink(); frameCore(true); };
+
+const namesBtn = document.getElementById("names");
+namesBtn.setAttribute("aria-pressed", "false");
+namesBtn.onclick = () => {
+  namesForced = !namesForced;
+  namesBtn.setAttribute("aria-pressed", String(namesForced));
+  syncLabels();
+};
 function syncRecenter(){
   recenterBtn.classList.toggle("show", !map.getBounds().pad(-0.06).contains(L.latLng(HOME)));
 }
@@ -451,9 +520,17 @@ function highlight(i, pan){
   if (!layer.hasLayer(mk)) return;
   // z17 pulls apart the markers that share a building (hawker stalls, Sim Lim shops)
   if (pan) map.flyTo(mk.getLatLng(), Math.max(map.getZoom(), 17), {duration:.6});
-  mk.openPopup();
+  mk.openPopup();          // closes any previous popup first
   mk.bringToFront();
+  drawLink(i);             // ...so the line is drawn after, not wiped by, that close
 }
+
+// clicking empty map clears the selection
+map.on("click", () => {
+  clearLink();
+  active = null;
+  document.querySelectorAll(".card.on").forEach(c => c.classList.remove("on"));
+});
 
 function render(){
   const idx = shownIdx();
@@ -488,6 +565,8 @@ function render(){
   countEl.textContent = filtered ? idx.length + " of " + P.length : P.length + " places";
   if (active !== null) document.querySelectorAll(".card").forEach(c => c.classList.toggle("on", +c.dataset.i === active));
   paintRings();
+  syncLabels();
+  if (started) clearLink();
   if (started && idx.length) fit(true);   // narrowing the filter should reframe the map
 }
 
@@ -495,6 +574,7 @@ let started = false;
 render();
 frameCore();
 syncRecenter();
+syncLabels();
 started = true;
 
 // the map is laid out before web fonts settle, so re-measure once everything has loaded
